@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>QUANTUM CODE-TO-NUMBER ENGINE V7.0 Ultimate</title>
+
+<style>
+:root {
+    --bg-dark: #060713;
+    --panel-bg: rgba(11, 14, 28, 0.92);
+    --neon-cyan: #00f3ff;
+    --neon-magenta: #ff0055;
+    --neon-green: #39ff14;
+    --neon-purple: #b026ff;
+    --text-main: #f0f4f8;
+    --muted: #8a99ad;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    overflow-x: hidden;
+
+    background-image:
+        radial-gradient(
+            rgba(0, 243, 255, 0.05) 2px,
+            transparent 2px
+        ),
+        radial-gradient(
+            rgba(255, 0, 85, 0.03) 1px,
+            transparent 1px
+        );
+
+    background-size: 30px 30px;
+}
+
+/* =========================
+   BACKGROUND MATRIX
+========================= */
+
+#bg-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    opacity: 0.13;
+    pointer-events: none;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes cyberPulse {
+    0% {
+        box-shadow:
+            0 0 10px rgba(0, 243, 255, 0.2),
+            inset 0 0 10px rgba(0, 243, 255, 0.1);
+    }
+
+    50% {
+        box-shadow:
+            0 0 25px rgba(0, 243, 255, 0.5),
+            inset 0 0 15px rgba(0, 243, 255, 0.2);
+    }
+
+    100% {
+        box-shadow:
+            0 0 10px rgba(0, 243, 255, 0.2),
+            inset 0 0 10px rgba(0, 243, 255, 0.1);
+    }
+}
+
+@keyframes scanLine {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+/* =========================
+   MAIN WRAPPER
+========================= */
+
+.master-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    backdrop-filter: blur(15px);
+    background: var(--panel-bg);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 16px;
+    padding: 30px;
+
+    animation: cyberPulse 5s infinite ease-in-out;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.master-wrapper::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--neon-cyan),
+        transparent
+    );
+    opacity: 0.25;
+    animation: scanLine 8s linear infinite;
+    pointer-events: none;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+h1 {
+    text-align: center;
+    color: var(--neon-cyan);
+
+    text-shadow:
+        0 0 15px var(--neon-cyan),
+        0 0 30px var(--neon-purple);
+
+    font-size: 2.2rem;
+    letter-spacing: 4px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--neon-magenta);
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    line-height: 1.7;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px var(--neon-magenta);
+}
+
+/* =========================
+   CONFIGURATION
+========================= */
+
+.config-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.config-title {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.control-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.control-item {
+    flex: 1;
+    min-width: 180px;
+}
+
+.control-item label {
+    font-size: 11px;
+    display: block;
+    margin-bottom: 6px;
+    color: #b7c3d4;
+}
+
+select,
+button {
+    background: #0d1127;
+    color: var(--text-main);
+
+    border: 1px solid var(--neon-cyan);
+    padding: 10px 14px;
+    border-radius: 5px;
+
+    font-weight: bold;
+    font-size: 12px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    text-transform: uppercase;
+}
+
+select {
+    width: 100%;
+}
+
+select:hover,
+button:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-cyan);
+}
+
+.btn-magenta {
+    border-color: var(--neon-magenta);
+    color: var(--neon-magenta);
+}
+
+.btn-magenta:hover {
+    background: var(--neon-magenta);
+    color: #fff;
+    box-shadow: 0 0 15px var(--neon-magenta);
+}
+
+.btn-green {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+}
+
+.btn-green:hover {
+    background: var(--neon-green);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+.btn-purple {
+    border-color: var(--neon-purple);
+    color: var(--neon-purple);
+}
+
+.btn-purple:hover {
+    background: var(--neon-purple);
+    color: #fff;
+    box-shadow: 0 0 15px var(--neon-purple);
+}
+
+/* =========================
+   WORKSPACE
+========================= */
+
+.workspace-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.panel {
+    background: rgba(4, 5, 15, 0.88);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.panel-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: var(--neon-cyan);
+}
+
+.badge {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+
+    background: rgba(255, 0, 85, 0.1);
+    border: 1px solid var(--neon-magenta);
+    color: var(--neon-magenta);
+
+    text-shadow: 0 0 5px var(--neon-magenta);
+    white-space: nowrap;
+}
+
+.badge.green {
+    background: rgba(57, 255, 20, 0.1);
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+}
+
+/* =========================
+   TEXTAREAS
+========================= */
+
+textarea {
+    width: 100%;
+    height: 300px;
+
+    background: #020308;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+
+    color: var(--neon-green);
+
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.5;
+
+    padding: 12px;
+
+    resize: vertical;
+    min-height: 180px;
+
+    transition: all 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--neon-cyan);
+
+    box-shadow:
+        0 0 15px rgba(0, 243, 255, 0.4);
+}
+
+#numericResult {
+    color: var(--neon-cyan);
+}
+
+/* =========================
+   ACTION BAR
+========================= */
+
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* =========================
+   METRICS
+========================= */
+
+.dashboard-metrics {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.metric-card {
+    background: rgba(255, 255, 255, 0.025);
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    padding: 15px;
+
+    border-radius: 7px;
+
+    text-align: center;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 4px;
+    height: 100%;
+
+    background: var(--neon-purple);
+
+    border-radius: 7px 0 0 7px;
+}
+
+.metric-label {
+    font-size: 11px;
+    color: var(--muted);
+
+    text-transform: uppercase;
+
+    margin-bottom: 7px;
+}
+
+.metric-value {
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: var(--neon-cyan);
+
+    font-family: monospace;
+
+    word-break: break-word;
+}
+
+/* =========================
+   STATUS BAR
+========================= */
+
+.status-bar {
+    margin-top: 20px;
+
+    padding: 10px 14px;
+
+    border: 1px solid rgba(0, 243, 255, 0.15);
+
+    border-radius: 6px;
+
+    background: rgba(0, 243, 255, 0.03);
+
+    color: #8ea1b9;
+
+    font-family: monospace;
+
+    font-size: 12px;
+}
+
+.status-online {
+    color: var(--neon-green);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    text-align: center;
+
+    margin-top: 25px;
+
+    font-family: monospace;
+
+    font-size: 11px;
+
+    color: #63748a;
+
+    letter-spacing: 1px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1024px) {
+    .workspace-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 8px;
+    }
+
+    .master-wrapper {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-size: 1.35rem;
+        letter-spacing: 2px;
+    }
+
+    .subtitle {
+        font-size: 0.75rem;
+    }
+
+    .panel {
+        padding: 12px;
+    }
+
+    .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    textarea {
+        height: 240px;
+    }
+
+    .action-bar button {
+        flex: 1;
+        min-width: 140px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="master-wrapper">
+
+    <h1>🌌 QUANTUM CODE-TO-NUMBER SYSTEM</h1>
+
+    <div class="subtitle">
+        ระบบวิเคราะห์ ถอดรหัส และแปลงซอร์สโค้ด
+        สู่โครงสร้างมิติตัวเลขสากลแบบประมวลผลอัตโนมัติ
+    </div>
+
+    <!-- =========================
+         CONFIGURATION
+    ========================== -->
+
+    <div class="config-box">
+
+        <div class="config-title">
+            🎛️ แผงตั้งค่าและอัลกอริทึมการแปลง
+            (Advanced Options)
+        </div>
+
+        <div class="control-row">
+
+            <div class="control-item">
+
+                <label>
+                    ระบบฐานตัวเลขปลายทาง
+                </label>
+
+                <select
+                    id="numSystem"
+                    onchange="runQuantumProcess()"
+                >
+                    <option value="dec">
+                        Decimal (ฐาน 10 สากล)
+                    </option>
+
+                    <option value="hex">
+                        Hexadecimal (ฐาน 16 สำหรับ Debug)
+                    </option>
+
+                    <option value="bin">
+                        Binary Matrix (ฐาน 2 บิตอาร์เรย์)
+                    </option>
+
+                    <option value="oct">
+                        Octal (ฐาน 8 คลาสสิก)
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="control-item">
+
+                <label>
+                    ตัวคั่นอักขระ (Delimiter)
+                </label>
+
+                <select
+                    id="delimiterOpt"
+                    onchange="runQuantumProcess()"
+                >
+                    <option value="space">
+                        ช่องว่าง (Space)
+                    </option>
+
+                    <option value="comma">
+                        จุลภาค ( , )
+                    </option>
+
+                    <option value="dash">
+                        ยัติภังค์ ( - )
+                    </option>
+
+                    <option value="newline">
+                        ขึ้นบรรทัดใหม่
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="control-item">
+
+                <label>
+                    การปรับข้อมูล / Bit Transform
+                </label>
+
+                <select
+                    id="endianMode"
+                    onchange="runQuantumProcess()"
+                >
+                    <option value="normal">
+                        ดิบ 1:1 (No Shift)
+                    </option>
+
+                    <option value="shift8">
+                        เข้ารหัสสถาปัตยกรรม 8-bit
+                    </option>
+
+                    <option value="shift16">
+                        เข้ารหัสสถาปัตยกรรม 16-bit
+                    </option>
+                </select>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =========================
+         WORKSPACE
+    ========================== -->
+
+    <div class="workspace-grid">
+
+        <!-- INPUT -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <span class="panel-title">
+                    📡 ตัวป้อนข้อมูลซอร์สโค้ด
+                </span>
+
+                <span
+                    id="detectedLang"
+                    class="badge"
+                >
+                    ตรวจจับ: รอป้อนข้อมูล
+                </span>
+
+            </div>
+
+            <textarea
+                id="rawCodeInput"
+                oninput="runQuantumProcess()"
+                placeholder="วางโค้ดโปรแกรมที่นี่ เช่น Python, C++, Java, JavaScript, PHP, HTML..."
+            ></textarea>
+
+            <div class="action-bar">
+
+                <button
+                    class="btn-magenta"
+                    onclick="clearTerminal()"
+                >
+                    🧹 ล้างหน้าต่าง
+                </button>
+
+                <button
+                    onclick="loadSampleCode()"
+                >
+                    📁 โหลดโค้ดตัวอย่าง
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- OUTPUT -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <span class="panel-title">
+                    🔮 ผลลัพธ์ตัวเลขควอนตัม
+                </span>
+
+                <span
+                    id="architectureMode"
+                    class="badge green"
+                >
+                    ระบบแปรผัน: ทั่วไป
+                </span>
+
+            </div>
+
+            <textarea
+                id="numericResult"
+                readonly
+                placeholder="ผลลัพธ์ตัวเลขจะแสดงที่นี่..."
+            ></textarea>
+
+            <div class="action-bar">
+
+                <button
+                    class="btn-green"
+                    onclick="downloadTxtFile()"
+                >
+                    💾 ดาวน์โหลด .TXT
+                </button>
+
+                <button
+                    onclick="copyOutputToClipboard()"
+                >
+                    📋 คัดลอกผลลัพธ์
+                </button>
+
+                <button
+                    class="btn-purple"
+                    onclick="reverseDecode()"
+                >
+                    🔄 ถอดรหัสย้อนกลับ
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         METRICS
+    ========================== -->
+
+    <div class="dashboard-metrics">
+
+        <div class="metric-card">
+
+            <div class="metric-label">
+                จำนวนอักขระ
+            </div>
+
+            <div
+                id="metric-chars"
+                class="metric-value"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-label">
+                ระบบจัดสรรหน่วยความจำ
+            </div>
+
+            <div
+                id="metric-mem"
+                class="metric-value"
+            >
+                0 Bytes
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-label">
+                ความเหมาะสมสถาปัตยกรรม
+            </div>
+
+            <div
+                id="metric-fit"
+                class="metric-value"
+            >
+                N/A
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-label">
+                Checksum
+            </div>
+
+            <div
+                id="metric-checksum"
+                class="metric-value"
+            >
+                0000
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div class="status-bar">
+
+        SYSTEM STATUS:
+        <span class="status-online">
+            ● ONLINE
+        </span>
+
+        &nbsp; | &nbsp;
+
+        ENGINE:
+        <span id="engineStatus">
+            QUANTUM V7.0
+        </span>
+
+        &nbsp; | &nbsp;
+
+        MODE:
+        <span id="currentMode">
+            DECIMAL
+        </span>
+
+    </div>
+
+
+    <div class="footer">
+        QUANTUM CODE-TO-NUMBER ENGINE V7.0 ULTIMATE
+        <br>
+        Universal Character Encoding Analysis System
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   1. SCI-FI MATRIX BACKGROUND
+========================================================= */
+
+const canvas = document.getElementById("bg-canvas");
+const ctx = canvas.getContext("2d");
+
+let w = canvas.width = window.innerWidth;
+let h = canvas.height = window.innerHeight;
+
+const chars =
+    "01010101ΣΨΩΞΦΠΔABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const fontSize = 14;
+
+let columns = Math.floor(w / fontSize);
+
+let drops = Array(columns).fill(1);
+
+
+function drawMatrixEffect() {
+
+    ctx.fillStyle = "rgba(6, 7, 19, 0.07)";
+
+    ctx.fillRect(
+        0,
+        0,
+        w,
+        h
+    );
+
+    ctx.fillStyle = "#00f3ff";
+
+    ctx.font =
+        fontSize + "px monospace";
+
+    for (
+        let i = 0;
+        i < drops.length;
+        i++
+    ) {
+
+        const txt =
+            chars.charAt(
+                Math.floor(
+                    Math.random() * chars.length
+                )
+            );
+
+        ctx.fillText(
+            txt,
+            i * fontSize,
+            drops[i] * fontSize
+        );
+
+        if (
+            drops[i] * fontSize > h &&
+            Math.random() > 0.975
+        ) {
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+}
+
+
+setInterval(
+    drawMatrixEffect,
+    40
+);
+
+
+window.addEventListener(
+    "resize",
+    function () {
+
+        w =
+            canvas.width =
+            window.innerWidth;
+
+        h =
+            canvas.height =
+            window.innerHeight;
+
+        columns =
+            Math.floor(w / fontSize);
+
+        drops =
+            Array(columns).fill(1);
+    }
+);
+
+
+/* =========================================================
+   2. LANGUAGE DETECTOR
+========================================================= */
+
+function analyzeLanguageStructure(code) {
+
+    if (!code.trim()) {
+
+        return {
+            name: "ไม่มีข้อมูล",
+            arch: "Universal Generic Layout"
+        };
+
+    }
+
+
+    /* Python */
+
+    if (
+        /\bdef\s+\w+\s*\(/.test(code) ||
+        /\bimport\s+\w+/.test(code) ||
+        /\bprint\s*\(/.test(code)
+    ) {
+
+        return {
+            name: "Python",
+            arch: "Dynamic Object Stack (8-Bit Block)"
+        };
+
+    }
+
+
+    /* Java / Kotlin */
+
+    if (
+        /public\s+static\s+void/.test(code) ||
+        /System\.out/.test(code) ||
+        /\bfun\s+main\s*\(/.test(code)
+    ) {
+
+        return {
+            name: "Java / Kotlin",
+            arch: "JVM Stack Array (Fixed 16-Bit)"
+        };
+
+    }
+
+
+    /* C / C++ / Rust */
+
+    if (
+        /#include\s*</.test(code) ||
+        /cout\s*<</.test(code) ||
+        /\bmalloc\s*\(/.test(code) ||
+        /\bfn\s+main\s*\(/.test(code)
+    ) {
+
+        return {
+            name: "C / C++ / Rust",
+            arch: "Native Memory Address Pointer (Flat Multi-Byte)"
+        };
+
+    }
+
+
+    /* JavaScript */
+
+    if (
+        /\bfunction\s+\w+\s*\(/.test(code) ||
+        /console\.log\s*\(/.test(code) ||
+        /\b(let|const|var)\s+\w+/.test(code)
+    ) {
+
+        return {
+            name: "JavaScript / Node.js",
+            arch: "V8 Non-blocking Buffer Stream"
+        };
+
+    }
+
+
+    /* PHP */
+
+    if (
+        /<\?php/i.test(code) ||
+        /\$\w+\s*=/.test(code)
+    ) {
+
+        return {
+            name: "PHP",
+            arch: "Server-Side Dynamic Memory Stream"
+        };
+
+    }
+
+
+    /* HTML */
+
+    if (
+        /<!DOCTYPE\s+html/i.test(code) ||
+        /<html[\s>]/i.test(code) ||
+        /<div[\s>]/i.test(code) ||
+        /class\s*=/i.test(code)
+    ) {
+
+        return {
+            name: "HTML / CSS Markup",
+            arch: "Structural DOM Tree Byte Map"
+        };
+
+    }
+
+
+    return {
+        name: "Universal Code",
+        arch: "Standard Unified ASCII-Unicode Layout"
+    };
+}
+
+
+/* =========================================================
+   3. CORE QUANTUM PROCESSOR
+========================================================= */
+
+function runQuantumProcess() {
+
+    const input =
+        document.getElementById(
+            "rawCodeInput"
+        ).value;
+
+    const system =
+        document.getElementById(
+            "numSystem"
+        ).value;
+
+    const delimOpt =
+        document.getElementById(
+            "delimiterOpt"
+        ).value;
+
+    const endian =
+        document.getElementById(
+            "endianMode"
+        ).value;
+
+
+    /* Detect language */
+
+    const lang =
+        analyzeLanguageStructure(input);
+
+
+    document.getElementById(
+        "detectedLang"
+    ).innerText =
+        `ตรวจจับ: ${lang.name}`;
+
+
+    document.getElementById(
+        "architectureMode"
+    ).innerText =
+        `ระบบแปรผัน: ${lang.arch}`;
+
+
+    document.getElementById(
+        "currentMode"
+    ).innerText =
+        system.toUpperCase();
+
+
+    /* Empty input */
+
+    if (!input) {
+
+        document.getElementById(
+            "numericResult"
+        ).value = "";
+
+        resetMetrics();
+
+        return;
+    }
+
+
+    /* Delimiter */
+
+    let delimiter = " ";
+
+    if (delimOpt === "comma") {
+        delimiter = ", ";
+    }
+
+    else if (delimOpt === "dash") {
+        delimiter = "-";
+    }
+
+    else if (delimOpt === "newline") {
+        delimiter = "\n";
+    }
+
+
+    const numericOutputs = [];
+
+    let checksumAcc = 0;
+
+
+    /* Process every Unicode UTF-16 code unit */
+
+    for (
+        let i = 0;
+        i < input.length;
+        i++
+    ) {
+
+        let charCode =
+            input.charCodeAt(i);
+
+
+        checksumAcc += charCode;
+
+
+        /* Architecture transformation */
+
+        if (
+            lang.name ===
+            "C / C++ / Rust"
+        ) {
+
+            charCode =
+                charCode % 256;
+        }
+
+
+        else if (
+            lang.name ===
+            "Java / Kotlin"
+        ) {
+
+            charCode =
+                charCode + 2;
+        }
+
+
+        /* Bit transformation */
+
+        if (endian === "shift8") {
+
+            charCode =
+                charCode ^ 0xAA;
+        }
+
+
+        else if (endian === "shift16") {
+
+            charCode =
+                charCode + 1024;
+        }
+
+
+        /* Convert number system */
+
+        let valStr;
+
+
+        if (system === "hex") {
+
+            valStr =
+                "0x" +
+                charCode
+                    .toString(16)
+                    .toUpperCase();
+        }
+
+
+        else if (system === "bin") {
+
+            valStr =
+                charCode
+                    .toString(2)
+                    .padStart(8, "0");
+        }
+
+
+        else if (system === "oct") {
+
+            valStr =
+                "0" +
+                charCode.toString(8);
+        }
+
+
+        else {
+
+            valStr =
+                charCode.toString(10);
+        }
+
+
+        numericOutputs.push(
+            valStr
+        );
+    }
+
+
+    /* Display result */
+
+    document.getElementById(
+        "numericResult"
+    ).value =
+        numericOutputs.join(
+            delimiter
+        );
+
+
+    /* Metrics */
+
+    document.getElementById(
+        "metric-chars"
+    ).innerText =
+        input.length;
+
+
+    /*
+       Approximate display size.
+       This is a logical metric, not actual browser RAM usage.
+    */
+
+    const bytesPerChar =
+        system === "bin"
+            ? 8
+            : 2;
+
+
+    document.getElementById(
+        "metric-mem"
+    ).innerText =
+        `${input.length * bytesPerChar} Bytes`;
+
+
+    document.getElementById(
+        "metric-fit"
+    ).innerText =
+        lang.name;
+
+
+    document.getElementById(
+        "metric-checksum"
+    ).innerText =
+        String(
+            checksumAcc % 9999
+        ).padStart(
+            4,
+            "0"
+        );
+}
+
+
+/* =========================================================
+   4. DOWNLOAD TXT
+========================================================= */
+
+function downloadTxtFile() {
+
+    const resultText =
+        document.getElementById(
+            "numericResult"
+        ).value;
+
+
+    if (!resultText) {
+
+        alert(
+            "❌ ตรวจพบค่าว่าง!\nกรุณาใส่โค้ดก่อนดาวน์โหลด"
+        );
+
+        return;
+    }
+
+
+    const blob =
+        new Blob(
+            [resultText],
+            {
+                type:
+                    "text/plain;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const tempLink =
+        document.createElement(
+            "a"
+        );
+
+
+    tempLink.href = url;
+
+    tempLink.download =
+        `quantum_numeric_matrix_${Date.now()}.txt`;
+
+
+    document.body.appendChild(
+        tempLink
+    );
+
+
+    tempLink.click();
+
+
+    document.body.removeChild(
+        tempLink
+    );
+
+
+    URL.revokeObjectURL(
+        url
+    );
+}
+
+
+/* =========================================================
+   5. REVERSE DECODER
+========================================================= */
+
+function reverseDecode() {
+
+    const numericData =
+        prompt(
+            "🎛️ ระบบถอดรหัสย้อนกลับ\n\n" +
+            "วางข้อมูลตัวเลขที่นี่\n" +
+            "รองรับ Decimal / Hex / Binary / Comma / Space / New Line"
+        );
+
+
+    if (!numericData) {
+        return;
+    }
+
+
+    try {
+
+        /*
+           รองรับ:
+           65 66 67
+           65,66,67
+           0x41 0x42
+           01000001 01000010
+        */
+
+        const items =
+            numericData
+                .trim()
+                .split(/[\s,;-]+/)
+                .filter(Boolean);
+
+
+        let decodedStr = "";
+
+
+        for (
+            const itemRaw of items
+        ) {
+
+            const item =
+                itemRaw.trim();
+
+
+            if (!item) {
+                continue;
+            }
+
+
+            let value;
+
+
+            /* HEX */
+
+            if (
+                /^0x[0-9a-f]+$/i.test(item)
+            ) {
+
+                value =
+                    parseInt(
+                        item,
+                        16
+                    );
+            }
+
+
+            /* Binary */
+
+            else if (
+                /^[01]+$/.test(item) &&
+                item.length >= 8
+            ) {
+
+                value =
+                    parseInt(
+                        item,
+                        2
+                    );
+            }
+
+
+            /* Decimal */
+
+            else if (
+                /^\d+$/.test(item)
+            ) {
+
+                value =
+                    parseInt(
+                        item,
+                        10
+                    );
+            }
+
+
+            else {
+
+                throw new Error(
+                    "Invalid number"
+                );
+            }
+
+
+            if (
+                !Number.isFinite(value) ||
+                value < 0 ||
+                value > 65535
+            ) {
+
+                throw new Error(
+                    "Number out of range"
+                );
+            }
+
+
+            decodedStr +=
+                String.fromCharCode(
+                    value
+                );
+        }
+
+
+        document.getElementById(
+            "rawCodeInput"
+        ).value =
+            decodedStr;
+
+
+        runQuantumProcess();
+
+
+        alert(
+            "✨ ถอดรหัสตัวเลขกลับเข้าสู่โครงสร้างข้อความสำเร็จ!"
+        );
+
+    }
+
+    catch (error) {
+
+        alert(
+            "❌ ถอดรหัสล้มเหลว\n\n" +
+            "ตรวจสอบว่าข้อมูลเป็นตัวเลขที่ถูกต้อง"
+        );
+    }
+}
+
+
+/* =========================================================
+   6. SAMPLE CODE
+========================================================= */
+
+function loadSampleCode() {
+
+    const samples = [
+
+        `#include <iostream>
+int main() {
+    std::cout << "Quantum Matrix Loaded!";
+    return 0;
+}`,
+
+        `def calculate_quantum_data(nodes):
+    print("Processing Data Nodes...")
+    return [x * 42 for x in nodes]`,
+
+        `function initCyberGrid() {
+    const matrix = "Universal Code";
+    console.log(\`System status: \${matrix}\`);
+}`,
+
+        `<!DOCTYPE html>
+<html>
+<head>
+    <title>Quantum Demo</title>
+</head>
+<body>
+    <div class="quantum">Hello Quantum</div>
+</body>
+</html>`,
+
+        `<?php
+$message = "Quantum PHP Engine";
+echo $message;
+?>`
+
+    ];
+
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            samples.length
+        );
+
+
+    document.getElementById(
+        "rawCodeInput"
+    ).value =
+        samples[randomIndex];
+
+
+    runQuantumProcess();
+}
+
+
+/* =========================================================
+   7. CLEAR TERMINAL
+========================================================= */
+
+function clearTerminal() {
+
+    document.getElementById(
+        "rawCodeInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "numericResult"
+    ).value = "";
+
+
+    resetMetrics();
+}
+
+
+/* =========================================================
+   8. RESET METRICS
+========================================================= */
+
+function resetMetrics() {
+
+    document.getElementById(
+        "metric-chars"
+    ).innerText = "0";
+
+
+    document.getElementById(
+        "metric-mem"
+    ).innerText =
+        "0 Bytes";
+
+
+    document.getElementById(
+        "metric-fit"
+    ).innerText =
+        "N/A";
+
+
+    document.getElementById(
+        "metric-checksum"
+    ).innerText =
+        "0000";
+
+
+    document.getElementById(
+        "detectedLang"
+    ).innerText =
+        "ตรวจจับ: รอป้อนข้อมูล";
+
+
+    document.getElementById(
+        "architectureMode"
+    ).innerText =
+        "ระบบแปรผัน: ทั่วไป";
+}
+
+
+/* =========================================================
+   9. COPY RESULT
+========================================================= */
+
+async function copyOutputToClipboard() {
+
+    const output =
+        document.getElementById(
+            "numericResult"
+        );
+
+
+    if (!output.value) {
+
+        alert(
+            "ไม่มีข้อมูลให้คัดลอก"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
+
+            await navigator.clipboard.writeText(
+                output.value
+            );
+
+        }
+
+        else {
+
+            output.focus();
+
+            output.select();
+
+            document.execCommand(
+                "copy"
+            );
+        }
+
+
+        alert(
+            "📋 คัดลอกผลลัพธ์ลงคลิปบอร์ดแล้ว!"
+        );
+
+    }
+
+    catch (error) {
+
+        alert(
+            "❌ ไม่สามารถคัดลอกข้อมูลได้"
+        );
+    }
+}
+
+
+/* =========================================================
+   10. INITIALIZE ENGINE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        resetMetrics();
+
+        drawMatrixEffect();
+
+        console.log(
+            "QUANTUM CODE-TO-NUMBER ENGINE V7.0 ONLINE"
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>

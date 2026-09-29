@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>UNIVERSAL CODE-TO-NUMBER CONVERTER Matrix v4.0</title>
+
+    <style>
+        :root {
+            --bg-color: #0a0b10;
+            --panel-bg: rgba(16, 18, 27, 0.88);
+            --primary: #00ffcc;
+            --secondary: #ff007f;
+            --text: #e2e8f0;
+            --accent: #9400d3;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 255, 204, 0.03) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 255, 204, 0.03) 1px,
+                    transparent 1px
+                );
+
+            background-size: 20px 20px;
+        }
+
+        /* =========================
+           MATRIX BACKGROUND
+        ========================= */
+
+        #bg-effect {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* =========================
+           ANIMATION
+        ========================= */
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 5px rgba(0, 255, 204, 0.2);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 20px rgba(0, 255, 204, 0.6),
+                    0 0 40px rgba(148, 0, 211, 0.15);
+            }
+
+            100% {
+                box-shadow: 0 0 5px rgba(0, 255, 204, 0.2);
+            }
+        }
+
+        @keyframes titleGlow {
+            0%,
+            100% {
+                text-shadow:
+                    0 0 5px var(--primary),
+                    0 0 10px var(--primary);
+            }
+
+            50% {
+                text-shadow:
+                    0 0 10px var(--primary),
+                    0 0 25px var(--primary),
+                    0 0 40px var(--accent);
+            }
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            background: var(--panel-bg);
+
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+
+            padding: 30px;
+
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+
+        /* =========================
+           TITLE
+        ========================= */
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+
+            letter-spacing: 2px;
+            margin-top: 0;
+
+            text-transform: uppercase;
+
+            animation: titleGlow 3s infinite ease-in-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: -10px;
+            margin-bottom: 25px;
+        }
+
+        /* =========================
+           GRID
+        ========================= */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+        }
+
+        /* =========================
+           PANELS
+        ========================= */
+
+        .panel {
+            background: rgba(0, 0, 0, 0.5);
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            border-radius: 8px;
+
+            padding: 15px;
+
+            position: relative;
+        }
+
+        .panel-title {
+            font-size: 14px;
+
+            text-transform: uppercase;
+
+            color: var(--secondary);
+
+            margin-bottom: 10px;
+
+            letter-spacing: 1px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* =========================
+           TEXTAREA
+        ========================= */
+
+        textarea {
+            width: 100%;
+            height: 250px;
+
+            background: #050508;
+
+            border: 1px solid #333;
+
+            color: #55ff55;
+
+            font-family:
+                "Courier New",
+                Courier,
+                monospace;
+
+            padding: 10px;
+
+            border-radius: 4px;
+
+            resize: vertical;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+        textarea:focus {
+            outline: none;
+
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 10px rgba(0, 255, 204, 0.3);
+        }
+
+        /* =========================
+           CONTROL BAR
+        ========================= */
+
+        .control-bar {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 15px;
+
+            align-items: center;
+        }
+
+        select,
+        button {
+            background: #111;
+
+            color: var(--text);
+
+            border: 1px solid var(--primary);
+
+            padding: 10px 15px;
+
+            border-radius: 4px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: all 0.3s ease;
+        }
+
+        select:hover,
+        button:hover {
+            background: var(--primary);
+
+            color: #000;
+
+            box-shadow:
+                0 0 15px var(--primary);
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        button.btn-accent {
+            border-color: var(--secondary);
+
+            color: var(--secondary);
+        }
+
+        button.btn-accent:hover {
+            background: var(--secondary);
+
+            color: #fff;
+
+            box-shadow:
+                0 0 15px var(--secondary);
+        }
+
+        /* =========================
+           STATUS BADGES
+        ========================= */
+
+        .status-badge {
+            background: rgba(0, 255, 204, 0.1);
+
+            color: var(--primary);
+
+            padding: 4px 8px;
+
+            border-radius: 4px;
+
+            font-size: 11px;
+
+            border: 1px solid var(--primary);
+
+            white-space: normal;
+        }
+
+        /* =========================
+           METRICS
+        ========================= */
+
+        .metrics-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(150px, 1fr)
+                );
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background:
+                rgba(255, 255, 255, 0.02);
+
+            border: 1px solid #222;
+
+            padding: 15px;
+
+            border-radius: 4px;
+
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .metric-val {
+            margin-top: 5px;
+
+            font-size: 18px;
+
+            color: var(--primary);
+
+            font-weight: bold;
+        }
+
+        /* =========================
+           INFO BAR
+        ========================= */
+
+        .info-bar {
+            margin-top: 20px;
+
+            padding: 12px;
+
+            border-left: 3px solid var(--secondary);
+
+            background:
+                rgba(255, 0, 127, 0.05);
+
+            font-size: 12px;
+
+            color: #94a3b8;
+        }
+
+        /* =========================
+           SCROLLBAR
+        ========================= */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050508;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="bg-effect"></canvas>
+
+    <div class="container">
+
+        <h1>
+            🌌 Universal Code-to-Number Converter 🪐
+        </h1>
+
+        <div class="subtitle">
+            MATRIX v4.0 • Universal Source Code Analyzer
+        </div>
+
+        <div class="grid">
+
+            <!-- =========================
+                 SOURCE CODE
+            ========================== -->
+
+            <div class="panel">
+
+                <div class="panel-title">
+
+                    <span>
+                        Source Code Input
+                        (ใส่โค้ดโปรแกรมได้ทุกภาษา)
+                    </span>
+
+                    <span
+                        id="detected-lang"
+                        class="status-badge"
+                    >
+                        ตรวจจับอัตโนมัติ: รอดำเนินการ
+                    </span>
+
+                </div>
+
+                <textarea
+                    id="sourceCode"
+                    placeholder="วางโค้ด Python, Java, C++, PHP, JavaScript, HTML, SQL ฯลฯ ที่นี่..."
+                    spellcheck="false"
+                ></textarea>
+
+                <div class="control-bar">
+
+                    <button onclick="processCode()">
+                        ⚡ ประมวลผลและแปลงระบบ
+                    </button>
+
+                    <button
+                        class="btn-accent"
+                        onclick="clearAll()"
+                    >
+                        🧹 ล้างข้อมูล
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- =========================
+                 NUMERIC OUTPUT
+            ========================== -->
+
+            <div class="panel">
+
+                <div class="panel-title">
+
+                    <span>
+                        Numeric Output
+                        (รหัสตัวเลขประมวลผล)
+                    </span>
+
+                    <span
+                        id="system-mode"
+                        class="status-badge"
+                        style="
+                            color: var(--secondary);
+                            border-color: var(--secondary);
+                        "
+                    >
+                        โหมด: ทั่วไป
+                    </span>
+
+                </div>
+
+                <textarea
+                    id="numericOutput"
+                    readonly
+                    placeholder="ผลลัพธ์ตัวเลขจะแสดงที่นี่..."
+                ></textarea>
+
+                <div class="control-bar">
+
+                    <select
+                        id="numberFormat"
+                        onchange="processCode()"
+                    >
+                        <option value="dec">
+                            ระบบฐาน 10 (Decimal)
+                        </option>
+
+                        <option value="hex">
+                            ระบบฐาน 16 (Hexadecimal)
+                        </option>
+
+                        <option value="bin">
+                            ระบบฐาน 2 (Binary Matrix)
+                        </option>
+                    </select>
+
+                    <button onclick="copyToClipboard()">
+                        📋 คัดลอกผลลัพธ์
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+             METRICS
+        ========================== -->
+
+        <div class="metrics-grid">
+
+            <div class="metric-card">
+
+                <div class="metric-label">
+                    จำนวนอักขระทั้งหมด
+                </div>
+
+                <div
+                    id="m-chars"
+                    class="metric-val"
+                >
+                    0
+                </div>
+
+            </div>
+
+            <div class="metric-card">
+
+                <div class="metric-label">
+                    ภาษาที่ตรวจพบ
+                </div>
+
+                <div
+                    id="m-arch"
+                    class="metric-val"
+                >
+                    N/A
+                </div>
+
+            </div>
+
+            <div class="metric-card">
+
+                <div class="metric-label">
+                    เอนโทรปีโดยประมาณ
+                </div>
+
+                <div
+                    id="m-entropy"
+                    class="metric-val"
+                >
+                    0%
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="info-bar">
+            ⚠️ หมายเหตุ:
+            ระบบนี้เป็นตัวแปลงอักขระของ Source Code
+            ให้เป็นค่าตัวเลขตาม Unicode/UTF-16
+            และรูปแบบฐานที่เลือก ไม่ใช่ Compiler
+            หรือระบบแปลง Source Code เป็น Machine Code จริง
+        </div>
+
+    </div>
+
+    <script>
+
+        /* =====================================================
+           1. MATRIX RAIN BACKGROUND
+        ===================================================== */
+
+        const canvas =
+            document.getElementById("bg-effect");
+
+        const ctx =
+            canvas.getContext("2d");
+
+        let width =
+            canvas.width = window.innerWidth;
+
+        let height =
+            canvas.height = window.innerHeight;
+
+        const alphabet =
+            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ01";
+
+        const fontSize = 16;
+
+        let columns =
+            Math.floor(width / fontSize);
+
+        let rainDrops =
+            Array(columns).fill(1);
+
+        function resizeCanvas() {
+
+            width =
+                canvas.width = window.innerWidth;
+
+            height =
+                canvas.height = window.innerHeight;
+
+            columns =
+                Math.floor(width / fontSize);
+
+            rainDrops =
+                Array(columns).fill(1);
+        }
+
+        function drawMatrix() {
+
+            ctx.fillStyle =
+                "rgba(10, 11, 16, 0.05)";
+
+            ctx.fillRect(
+                0,
+                0,
+                width,
+                height
+            );
+
+            ctx.fillStyle = "#00ffcc";
+
+            ctx.font =
+                fontSize + "px monospace";
+
+            for (
+                let i = 0;
+                i < rainDrops.length;
+                i++
+            ) {
+
+                const text =
+                    alphabet.charAt(
+                        Math.floor(
+                            Math.random() *
+                            alphabet.length
+                        )
+                    );
+
+                ctx.fillText(
+                    text,
+                    i * fontSize,
+                    rainDrops[i] * fontSize
+                );
+
+                if (
+                    rainDrops[i] * fontSize > height &&
+                    Math.random() > 0.975
+                ) {
+                    rainDrops[i] = 0;
+                }
+
+                rainDrops[i]++;
+            }
+        }
+
+        setInterval(
+            drawMatrix,
+            30
+        );
+
+        window.addEventListener(
+            "resize",
+            resizeCanvas
+        );
+
+
+        /* =====================================================
+           2. LANGUAGE DETECTION
+        ===================================================== */
+
+        function detectLanguage(code) {
+
+            const source =
+                code.trim();
+
+            if (!source) {
+
+                return {
+                    name: "ไม่พบข้อมูล",
+                    system: "Generic"
+                };
+            }
+
+            /* HTML */
+
+            if (
+                /<!DOCTYPE\s+html/i.test(source) ||
+                /<html[\s>]/i.test(source) ||
+                /<body[\s>]/i.test(source)
+            ) {
+
+                return {
+                    name: "HTML",
+                    system: "DOM Tree Structure"
+                };
+            }
+
+            /* XML */
+
+            if (
+                /^<\?xml/i.test(source)
+            ) {
+
+                return {
+                    name: "XML",
+                    system: "XML Tree Structure"
+                };
+            }
+
+            /* Python */
+
+            if (
+                /\bdef\s+\w+\s*\(/.test(source) ||
+                /\bimport\s+(pandas|numpy|os|sys|math)\b/.test(source) ||
+                /\bfrom\s+\w+\s+import\b/.test(source) ||
+                /\bprint\s*\(/.test(source)
+            ) {
+
+                return {
+                    name: "Python",
+                    system: "High-Level Unicode / Byte Stream"
+                };
+            }
+
+            /* Java */
+
+            if (
+                /public\s+static\s+void\s+main/.test(source) ||
+                /System\.out\.(print|println)/.test(source) ||
+                /\bpublic\s+class\s+\w+/.test(source)
+            ) {
+
+                return {
+                    name: "Java",
+                    system: "JVM / UTF-16"
+                };
+            }
+
+            /* C / C++ */
+
+            if (
+                /#include\s*<[^>]+>/.test(source) ||
+                /\bstd::cout\b/.test(source) ||
+                /\bstd::cin\b/.test(source) ||
+                /\bprintf\s*\(/.test(source)
+            ) {
+
+                return {
+                    name: "C / C++",
+                    system: "Native Byte-Oriented Architecture"
+                };
+            }
+
+            /* JavaScript / TypeScript */
+
+            if (
+                /\bconsole\.log\s*\(/.test(source) ||
+                /\b(let|const|var)\s+\w+\s*=/.test(source) ||
+                /\bfunction\s+\w+\s*\(/.test(source) ||
+                /=>/.test(source)
+            ) {
+
+                return {
+                    name: "JavaScript / TypeScript",
+                    system: "V8 / Dynamic Runtime"
+                };
+            }
+
+            /* PHP */
+
+            if (
+                /<\?php/i.test(source) ||
+                /\$\w+/.test(source)
+            ) {
+
+                return {
+                    name: "PHP",
+                    system: "Server-Side Scripting"
+                };
+            }
+
+            /* SQL */
+
+            if (
+                /\bSELECT\b/i.test(source) &&
+                /\bFROM\b/i.test(source)
+            ) {
+
+                return {
+                    name: "SQL",
+                    system: "Relational Query System"
+                };
+            }
+
+            /* Lua */
+
+            if (
+                /\blocal\s+\w+/.test(source) ||
+                /\bfunction\s+\w+\s*\(/.test(source) ||
+                /\bend\b/.test(source)
+            ) {
+
+                return {
+                    name: "Lua",
+                    system: "Lightweight Scripting Runtime"
+                };
+            }
+
+            /* C# */
+
+            if (
+                /\busing\s+System\b/.test(source) ||
+                /\bConsole\.WriteLine\s*\(/.test(source)
+            ) {
+
+                return {
+                    name: "C#",
+                    system: ".NET / UTF-16"
+                };
+            }
+
+            /* Generic */
+
+            return {
+                name: "Universal / Unknown",
+                system: "Standard Unicode"
+            };
+        }
+
+
+        /* =====================================================
+           3. CONVERT CODE TO NUMBERS
+        ===================================================== */
+
+        function processCode() {
+
+            const src =
+                document
+                    .getElementById("sourceCode")
+                    .value;
+
+            const fmt =
+                document
+                    .getElementById("numberFormat")
+                    .value;
+
+            const langResult =
+                detectLanguage(src);
+
+            /* Update language badge */
+
+            document
+                .getElementById("detected-lang")
+                .innerText =
+                    `ตรวจจับได้: ${langResult.name}`;
+
+            /* Update architecture badge */
+
+            document
+                .getElementById("system-mode")
+                .innerText =
+                    `โหมด: ${langResult.system}`;
+
+
+            /* Empty input */
+
+            if (!src.trim()) {
+
+                document
+                    .getElementById("numericOutput")
+                    .value = "";
+
+                updateMetrics(
+                    0,
+                    "ไม่พบข้อมูล",
+                    0
+                );
+
+                return;
+            }
+
+
+            let outputArray = [];
+
+
+            /* =================================================
+               CHARACTER CONVERSION
+            ================================================= */
+
+            for (
+                let i = 0;
+                i < src.length;
+                i++
+            ) {
+
+                let codeNum =
+                    src.charCodeAt(i);
+
+
+                /*
+                 * C / C++
+                 * จำกัดค่าให้อยู่ในช่วง Byte
+                 */
+
+                if (
+                    langResult.name === "C / C++"
+                ) {
+
+                    codeNum =
+                        codeNum % 256;
+                }
+
+
+                /*
+                 * Java / C#
+                 * ใช้ Unicode / UTF-16
+                 *
+                 * ไม่บวกค่าปลอมกับ Unicode
+                 */
+
+                if (
+                    langResult.name === "Java" ||
+                    langResult.name === "C#"
+                ) {
+
+                    codeNum =
+                        codeNum;
+                }
+
+
+                /* =============================
+                   DECIMAL
+                ============================= */
+
+                if (fmt === "dec") {
+
+                    outputArray.push(
+                        codeNum.toString(10)
+                    );
+
+                }
+
+
+                /* =============================
+                   HEX
+                ============================= */
+
+                else if (fmt === "hex") {
+
+                    outputArray.push(
+                        "0x" +
+                        codeNum
+                            .toString(16)
+                            .toUpperCase()
+                            .padStart(2, "0")
+                    );
+
+                }
+
+
+                /* =============================
+                   BINARY
+                ============================= */
+
+                else if (fmt === "bin") {
+
+                    outputArray.push(
+                        codeNum
+                            .toString(2)
+                            .padStart(8, "0")
+                    );
+                }
+            }
+
+
+            /* =================================================
+               OUTPUT SEPARATOR
+            ================================================= */
+
+            let separator = " ";
+
+            if (
+                langResult.name.includes("Python") ||
+                langResult.name.includes("JavaScript") ||
+                langResult.name.includes("Lua")
+            ) {
+
+                separator = "-";
+
+            }
+
+            else if (
+                langResult.name === "C / C++"
+            ) {
+
+                separator = ", ";
+            }
+
+
+            document
+                .getElementById("numericOutput")
+                .value =
+                    outputArray.join(separator);
+
+
+            /* =================================================
+               METRICS
+            ================================================= */
+
+            const entropy =
+                calculateEntropy(src);
+
+            updateMetrics(
+                src.length,
+                langResult.name,
+                entropy
+            );
+        }
+
+
+        /* =====================================================
+           4. ENTROPY CALCULATION
+        ===================================================== */
+
+        function calculateEntropy(text) {
+
+            if (!text.length) {
+                return 0;
+            }
+
+            const frequency = {};
+
+            for (const char of text) {
+
+                frequency[char] =
+                    (frequency[char] || 0) + 1;
+            }
+
+            let entropy = 0;
+
+            const length =
+                text.length;
+
+            for (const char in frequency) {
+
+                const probability =
+                    frequency[char] / length;
+
+                entropy -=
+                    probability *
+                    Math.log2(probability);
+            }
+
+            /*
+             * Normalize entropy roughly to 0-100%
+             */
+
+            const maxEntropy =
+                Math.log2(
+                    Math.min(
+                        256,
+                        Object.keys(frequency).length
+                    )
+                );
+
+            if (!maxEntropy) {
+                return 0;
+            }
+
+            return Math.min(
+                100,
+                Math.round(
+                    (entropy / maxEntropy) * 100
+                )
+            );
+        }
+
+
+        /* =====================================================
+           5. UPDATE METRICS
+        ===================================================== */
+
+        function updateMetrics(
+            chars,
+            arch,
+            entropy
+        ) {
+
+            document
+                .getElementById("m-chars")
+                .innerText =
+                    chars.toLocaleString();
+
+            document
+                .getElementById("m-arch")
+                .innerText =
+                    arch === "ไม่พบข้อมูล"
+                        ? "N/A"
+                        : arch;
+
+            document
+                .getElementById("m-entropy")
+                .innerText =
+                    chars === 0
+                        ? "0%"
+                        : `${entropy}%`;
+        }
+
+
+        /* =====================================================
+           6. CLEAR ALL
+        ===================================================== */
+
+        function clearAll() {
+
+            document
+                .getElementById("sourceCode")
+                .value = "";
+
+            document
+                .getElementById("numericOutput")
+                .value = "";
+
+            document
+                .getElementById("detected-lang")
+                .innerText =
+                    "ตรวจจับอัตโนมัติ: รอดำเนินการ";
+
+            document
+                .getElementById("system-mode")
+                .innerText =
+                    "โหมด: ทั่วไป";
+
+            updateMetrics(
+                0,
+                "ไม่พบข้อมูล",
+                0
+            );
+        }
+
+
+        /* =====================================================
+           7. COPY TO CLIPBOARD
+        ===================================================== */
+
+        async function copyToClipboard() {
+
+            const output =
+                document
+                    .getElementById("numericOutput")
+                    .value;
+
+            if (!output) {
+
+                alert(
+                    "⚠️ ไม่มีข้อมูลให้คัดลอก!"
+                );
+
+                return;
+            }
+
+
+            try {
+
+                if (
+                    navigator.clipboard &&
+                    window.isSecureContext
+                ) {
+
+                    await navigator.clipboard.writeText(
+                        output
+                    );
+
+                } else {
+
+                    const textarea =
+                        document.createElement("textarea");
+
+                    textarea.value = output;
+
+                    textarea.style.position =
+                        "fixed";
+
+                    textarea.style.opacity = "0";
+
+                    document.body.appendChild(
+                        textarea
+                    );
+
+                    textarea.focus();
+
+                    textarea.select();
+
+                    document.execCommand("copy");
+
+                    textarea.remove();
+                }
+
+                alert(
+                    "🚀 คัดลอกรหัสตัวเลขเข้าสู่คลิปบอร์ดสำเร็จแล้ว!"
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Clipboard Error:",
+                    error
+                );
+
+                alert(
+                    "❌ ไม่สามารถคัดลอกอัตโนมัติได้ กรุณาคัดลอกด้วยตนเอง"
+                );
+            }
+        }
+
+
+        /* =====================================================
+           8. AUTO PROCESS WHILE TYPING
+        ===================================================== */
+
+        document
+            .getElementById("sourceCode")
+            .addEventListener(
+                "input",
+                function () {
+
+                    processCode();
+
+                }
+            );
+
+
+        /* =====================================================
+           9. KEYBOARD SHORTCUT
+        ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                /*
+                 * Ctrl + Enter
+                 * ประมวลผลทันที
+                 */
+
+                if (
+                    event.ctrlKey &&
+                    event.key === "Enter"
+                ) {
+
+                    event.preventDefault();
+
+                    processCode();
+                }
+
+
+                /*
+                 * Ctrl + Shift + X
+                 * ล้างข้อมูล
+                 */
+
+                if (
+                    event.ctrlKey &&
+                    event.shiftKey &&
+                    event.key.toLowerCase() === "x"
+                ) {
+
+                    event.preventDefault();
+
+                    clearAll();
+                }
+            }
+        );
+
+
+        /* =====================================================
+           10. INITIAL STATE
+        ===================================================== */
+
+        updateMetrics(
+            0,
+            "ไม่พบข้อมูล",
+            0
+        );
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ULTRA CYBERNETIC QUANTUM MATRIX v10.1 | Code to Number Converter</title>
+
+    <meta name="description"
+          content="ULTRA CYBERNETIC QUANTUM MATRIX เครื่องมือแปลงข้อความและโค้ดเป็นตัวเลข รองรับ Decimal, Hexadecimal, Binary, Octal, XOR และ Bit Invert พร้อมแปลงกลับเป็นข้อความ">
+
+    <meta name="robots"
+          content="index, follow">
+
+    <meta name="theme-color"
+          content="#03050d">
+
+    <style>
+        :root {
+            --bg-dark: #03050d;
+            --panel-bg: rgba(10, 15, 30, 0.90);
+
+            --cyber-cyan: #00f3ff;
+            --cyber-magenta: #ff0055;
+            --cyber-neon: #39ff14;
+            --cyber-purple: #9d00ff;
+            --cyber-gold: #ffaa00;
+
+            --text-color: #e2eaf4;
+            --muted: #7e8e9f;
+
+            --font-mono:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+
+            font-family:
+                "Segoe UI",
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
+
+            margin: 0;
+            padding: 20px;
+
+            overflow-x: hidden;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 243, 255, 0.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 243, 255, 0.025) 1px,
+                    transparent 1px
+                );
+
+            background-size: 30px 30px;
+        }
+
+        /* ==============================
+           PARTICLE BACKGROUND
+        ============================== */
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            z-index: -1;
+            opacity: 0.25;
+
+            pointer-events: none;
+        }
+
+        /* ==============================
+           ANIMATIONS
+        ============================== */
+
+        @keyframes hologramPulse {
+
+            0% {
+                box-shadow:
+                    0 0 15px rgba(0, 243, 255, 0.2),
+                    inset 0 0 15px rgba(0, 243, 255, 0.1);
+
+                border-color: var(--cyber-cyan);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 35px rgba(0, 243, 255, 0.6),
+                    inset 0 0 25px rgba(0, 243, 255, 0.3);
+
+                border-color: var(--cyber-purple);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 15px rgba(0, 243, 255, 0.2),
+                    inset 0 0 15px rgba(0, 243, 255, 0.1);
+
+                border-color: var(--cyber-cyan);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.45;
+            }
+        }
+
+        /* ==============================
+           MAIN TERMINAL
+        ============================== */
+
+        .master-terminal {
+            width: 100%;
+            max-width: 1500px;
+
+            margin: 0 auto;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(10, 15, 30, 0.96),
+                    rgba(3, 5, 13, 0.96)
+                );
+
+            border: 2px solid var(--cyber-cyan);
+            border-radius: 16px;
+
+            padding: 30px;
+
+            backdrop-filter: blur(20px);
+
+            animation:
+                hologramPulse 6s
+                infinite ease-in-out;
+
+            position: relative;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        h1.glitch-title {
+            text-align: center;
+
+            font-size: clamp(
+                1.6rem,
+                4vw,
+                2.5rem
+            );
+
+            font-weight: 900;
+
+            color: #fff;
+
+            letter-spacing: 5px;
+
+            margin: 0 0 8px 0;
+
+            text-transform: uppercase;
+
+            text-shadow:
+                0 0 10px var(--cyber-cyan),
+                0 0 20px var(--cyber-purple),
+                0 0 40px rgba(0, 243, 255, 0.4);
+        }
+
+        .status-marquee {
+            text-align: center;
+
+            color: var(--cyber-magenta);
+
+            font-family: var(--font-mono);
+
+            font-size: 12px;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 25px;
+
+            text-transform: uppercase;
+
+            animation: pulse 3s infinite;
+        }
+
+        /* ==============================
+           SEO INFORMATION
+        ============================== */
+
+        .seo-info {
+            background:
+                rgba(0, 243, 255, 0.025);
+
+            border:
+                1px solid rgba(0, 243, 255, 0.15);
+
+            border-radius: 8px;
+
+            padding: 15px 18px;
+
+            margin-bottom: 20px;
+        }
+
+        .seo-info h2 {
+            margin: 0 0 8px 0;
+
+            font-size: 16px;
+
+            color: var(--cyber-cyan);
+
+            font-family: var(--font-mono);
+        }
+
+        .seo-info p {
+            margin: 5px 0;
+
+            color: #aebdce;
+
+            line-height: 1.6;
+
+            font-size: 13px;
+        }
+
+        .seo-keywords {
+            color: var(--cyber-neon);
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+
+        /* ==============================
+           WORKSPACE
+        ============================== */
+
+        .workspace {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                280px
+                minmax(0, 1fr);
+
+            gap: 20px;
+        }
+
+        @media (max-width: 1100px) {
+
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ==============================
+           PANELS
+        ============================== */
+
+        .monitor-panel {
+            min-width: 0;
+
+            background:
+                rgba(2, 3, 10, 0.9);
+
+            border:
+                1px solid rgba(0, 243, 255, 0.15);
+
+            border-radius: 8px;
+
+            padding: 20px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            transition:
+                all 0.3s ease;
+        }
+
+        .monitor-panel:hover {
+            border-color:
+                var(--cyber-cyan);
+
+            box-shadow:
+                0 0 15px
+                rgba(0, 243, 255, 0.1);
+        }
+
+        .panel-tag {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 12px;
+
+            font-family: var(--font-mono);
+
+            color: var(--cyber-cyan);
+
+            border-bottom:
+                1px solid
+                rgba(0, 243, 255, 0.2);
+
+            padding-bottom: 8px;
+
+            margin-bottom: 15px;
+
+            text-transform: uppercase;
+        }
+
+        .glow-badge {
+            padding: 2px 8px;
+
+            border-radius: 4px;
+
+            background:
+                rgba(57, 255, 20, 0.1);
+
+            border:
+                1px solid
+                var(--cyber-neon);
+
+            color:
+                var(--cyber-neon);
+
+            text-shadow:
+                0 0 5px
+                var(--cyber-neon);
+
+            white-space: nowrap;
+        }
+
+        /* ==============================
+           TEXTAREAS
+        ============================== */
+
+        textarea {
+            width: 100%;
+            height: 380px;
+
+            background: #010206;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 6px;
+
+            color: var(--cyber-neon);
+
+            font-family:
+                var(--font-mono);
+
+            padding: 15px;
+
+            resize: vertical;
+
+            min-height: 220px;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            transition: all 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+
+            border-color:
+                var(--cyber-magenta);
+
+            box-shadow:
+                0 0 15px
+                rgba(255, 0, 85, 0.3);
+        }
+
+        /* ==============================
+           OUTPUT FOR SEARCH/COPY
+        ============================== */
+
+        .machine-readable-output {
+            margin-top: 15px;
+
+            background: #000;
+
+            border:
+                1px solid
+                rgba(57,255,20,0.12);
+
+            border-radius: 6px;
+
+            padding: 12px;
+
+            min-height: 70px;
+
+            max-height: 160px;
+
+            overflow: auto;
+
+            color: var(--cyber-neon);
+
+            font-family:
+                var(--font-mono);
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+        }
+
+        .machine-readable-label {
+            display: block;
+
+            color:
+                var(--cyber-gold);
+
+            font-family:
+                var(--font-mono);
+
+            font-size: 10px;
+
+            margin-bottom: 6px;
+        }
+
+        /* ==============================
+           BUTTON ROW
+        ============================== */
+
+        .button-row {
+            margin-top: 15px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 10px;
+        }
+
+        /* ==============================
+           CENTER CONTROLS
+        ============================== */
+
+        .core-controls {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+
+            justify-content: center;
+        }
+
+        .control-group {
+            background:
+                rgba(255,255,255,0.02);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            padding: 12px;
+
+            border-radius: 6px;
+        }
+
+        .control-label {
+            font-size: 11px;
+
+            font-family:
+                var(--font-mono);
+
+            color: #8fa0b5;
+
+            margin-bottom: 6px;
+
+            text-transform: uppercase;
+
+            display: block;
+        }
+
+        select,
+        button {
+            width: 100%;
+
+            background: #0a0f24;
+
+            color: #fff;
+
+            border:
+                1px solid
+                var(--cyber-cyan);
+
+            padding: 12px;
+
+            border-radius: 4px;
+
+            font-weight: bold;
+
+            font-family:
+                var(--font-mono);
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition: all 0.2s;
+
+            box-sizing: border-box;
+
+            text-transform: uppercase;
+        }
+
+        select:hover,
+        button:hover {
+            background:
+                var(--cyber-cyan);
+
+            color: #000;
+
+            box-shadow:
+                0 0 15px
+                var(--cyber-cyan);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-magenta {
+            border-color:
+                var(--cyber-magenta);
+
+            color:
+                var(--cyber-magenta);
+        }
+
+        .btn-magenta:hover {
+            background:
+                var(--cyber-magenta);
+
+            color: #fff;
+
+            box-shadow:
+                0 0 15px
+                var(--cyber-magenta);
+        }
+
+        .btn-gold {
+            border-color:
+                var(--cyber-gold);
+
+            color:
+                var(--cyber-gold);
+        }
+
+        .btn-gold:hover {
+            background:
+                var(--cyber-gold);
+
+            color: #000;
+
+            box-shadow:
+                0 0 15px
+                var(--cyber-gold);
+        }
+
+        .btn-green {
+            border-color:
+                var(--cyber-neon);
+
+            color:
+                var(--cyber-neon);
+        }
+
+        .btn-green:hover {
+            background:
+                var(--cyber-neon);
+
+            color: #000;
+
+            box-shadow:
+                0 0 15px
+                var(--cyber-neon);
+        }
+
+        /* ==============================
+           DASHBOARD
+        ============================== */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(180px, 1fr)
+                );
+
+            gap: 15px;
+
+            margin-top: 25px;
+        }
+
+        .stat-node {
+            background:
+                rgba(255,255,255,0.01);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            padding: 15px;
+
+            border-radius: 6px;
+
+            border-left:
+                4px solid
+                var(--cyber-cyan);
+        }
+
+        .stat-label {
+            font-size: 10px;
+
+            color: #7e8e9f;
+
+            text-transform: uppercase;
+
+            margin-bottom: 5px;
+
+            font-family:
+                var(--font-mono);
+        }
+
+        .stat-val {
+            font-size: 20px;
+
+            font-weight: bold;
+
+            font-family:
+                var(--font-mono);
+
+            color: #fff;
+
+            text-shadow:
+                0 0 5px
+                rgba(255,255,255,0.2);
+
+            word-break: break-word;
+        }
+
+        /* ==============================
+           LOGGER
+        ============================== */
+
+        .logger-panel {
+            margin-top: 20px;
+
+            background: #000;
+
+            border:
+                1px solid #111;
+
+            padding: 10px;
+
+            border-radius: 4px;
+
+            font-family:
+                var(--font-mono);
+
+            font-size: 11px;
+
+            color: #666;
+
+            max-height: 100px;
+
+            overflow-y: auto;
+        }
+
+        .log-line {
+            margin-bottom: 4px;
+        }
+
+        .log-time {
+            color:
+                var(--cyber-cyan);
+        }
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        footer {
+            margin-top: 25px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            text-align: center;
+
+            color: #526174;
+
+            font-family:
+                var(--font-mono);
+
+            font-size: 10px;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 8px;
+            }
+
+            .master-terminal {
+                padding: 15px;
+            }
+
+            .panel-tag {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .button-row {
+                grid-template-columns: 1fr;
+            }
+
+            textarea {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<main class="master-terminal">
+
+    <header>
+
+        <h1 class="glitch-title">
+            🌌 CYBERNETIC QUANTUM MATRIX
+        </h1>
+
+        <div class="status-marquee">
+            🧬 SYSTEM STATUS: ACTIVE //
+            CODE ↔ NUMBER //
+            AUTO ROUTING ARCHITECTURE
+        </div>
+
+    </header>
+
+
+    <!--
+        ส่วนนี้เป็น HTML จริง
+        ไม่ได้สร้างด้วย JavaScript
+        ทำให้ข้อมูลพื้นฐานของเครื่องมืออยู่ใน DOM
+    -->
+
+    <section class="seo-info">
+
+        <h2>
+            Code to Number Converter
+        </h2>
+
+        <p>
+            เครื่องมือแปลงข้อความและโค้ดเป็นตัวเลข
+            รองรับระบบฐาน Decimal, Hexadecimal,
+            Binary และ Octal พร้อมระบบ XOR,
+            BIT-INVERT และการแปลงตัวเลขกลับเป็นข้อความ
+        </p>
+
+        <p class="seo-keywords">
+            TEXT TO NUMBER • CODE TO NUMBER •
+            NUMBER TO TEXT • DECIMAL • HEX •
+            BINARY • OCTAL • XOR • CYBER MATRIX
+        </p>
+
+    </section>
+
+
+    <section class="workspace">
+
+        <!-- =================================
+             LEFT PANEL
+        ================================== -->
+
+        <section class="monitor-panel">
+
+            <div class="panel-tag">
+
+                <span>
+                    📡 TEXT STORAGE STREAM
+                </span>
+
+                <span
+                    id="langTag"
+                    class="glow-badge"
+                    style="
+                        border-color: var(--cyber-purple);
+                        color: var(--cyber-purple);
+                        text-shadow:
+                        0 0 5px var(--cyber-purple);
+                    "
+                >
+                    โหมด: รอรับข้อมูล
+                </span>
+
+            </div>
+
+
+            <label for="textCore"
+                   class="control-label">
+                TEXT / CODE INPUT
+            </label>
+
+            <textarea
+                id="textCore"
+                spellcheck="false"
+                oninput="executeTextToNumbers()"
+                placeholder="พิมพ์ หรือ วางข้อความ/โค้ดสากลลงไปที่นี่..."
+            ></textarea>
+
+
+            <div class="button-row">
+
+                <button
+                    class="btn-magenta"
+                    onclick="wipeCore()"
+                >
+                    🧹 WIPE DATA
+                </button>
+
+                <button
+                    onclick="injectSample(1)"
+                >
+                    📄 LOAD CODE
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             CENTER CONTROL
+        ================================== -->
+
+        <section class="core-controls">
+
+            <div class="control-group">
+
+                <span class="control-label">
+                    🔢 ระบบฐานตัวเลขปลายทาง
+                </span>
+
+                <select
+                    id="baseConfig"
+                    onchange="forceRecompute()"
+                >
+                    <option value="10">
+                        BASE-10 (Decimal)
+                    </option>
+
+                    <option value="16">
+                        BASE-16 (Hexadecimal)
+                    </option>
+
+                    <option value="2">
+                        BASE-2 (Binary)
+                    </option>
+
+                    <option value="8">
+                        BASE-8 (Octal)
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <span class="control-label">
+                    🔗 สัญลักษณ์คั่นข้อมูล
+                </span>
+
+                <select
+                    id="delimConfig"
+                    onchange="forceRecompute()"
+                >
+                    <option value=" ">
+                        ช่องว่าง (Space)
+                    </option>
+
+                    <option value=",">
+                        จุลภาค ( , )
+                    </option>
+
+                    <option value="-">
+                        ขีดกลาง ( - )
+                    </option>
+
+                    <option value="\n">
+                        บรรทัดใหม่ (New Line)
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <span class="control-label">
+                    🛡️ อัลกอริทึมเข้ารหัส
+                </span>
+
+                <select
+                    id="cryptoConfig"
+                    onchange="forceRecompute()"
+                >
+                    <option value="none">
+                        ระบบมาตรฐานดิบ (No Shift)
+                    </option>
+
+                    <option value="xor">
+                        CYBER-XOR
+                    </option>
+
+                    <option value="invert">
+                        BIT-INVERT
+                    </option>
+                </select>
+
+            </div>
+
+
+            <button
+                class="btn-gold"
+                onclick="injectSample(2)"
+            >
+                🧮 LOAD NUMBER SAMPLE
+            </button>
+
+
+            <button
+                class="btn-green"
+                onclick="executeNumbersToText()"
+            >
+                🔄 NUMBER → TEXT
+            </button>
+
+
+            <button
+                class="btn-magenta"
+                onclick="downloadMatrixOutput()"
+            >
+                💾 DOWNLOAD .TXT
+            </button>
+
+
+            <button
+                onclick="copyToClipboard()"
+            >
+                📋 COPY NUMBERS
+            </button>
+
+        </section>
+
+
+        <!-- =================================
+             RIGHT PANEL
+        ================================== -->
+
+        <section class="monitor-panel">
+
+            <div class="panel-tag">
+
+                <span>
+                    🔢 NUMERIC COMPONENT
+                </span>
+
+                <span class="glow-badge">
+                    AUTO
+                </span>
+
+            </div>
+
+
+            <label for="numCore"
+                   class="control-label">
+
+                NUMERIC OUTPUT / INPUT
+
+            </label>
+
+
+            <textarea
+                id="numCore"
+                spellcheck="false"
+                oninput="executeNumbersToText()"
+                placeholder="ตัวเลขจะแสดงที่นี่..."
+            ></textarea>
+
+
+            <!--
+                Output นี้เป็น HTML element
+                สำหรับแสดงผลตัวเลขใน DOM โดยตรง
+            -->
+
+            <div class="machine-readable-output">
+
+                <span class="machine-readable-label">
+                    MACHINE READABLE NUMERIC OUTPUT
+                </span>
+
+                <output
+                    id="searchReadableOutput"
+                    aria-label="Numeric conversion output"
+                >
+                    รอรับข้อมูล
+                </output>
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- =================================
+         DASHBOARD
+    ================================== -->
+
+    <section
+        class="dashboard-grid"
+        aria-label="System Statistics"
+    >
+
+        <div class="stat-node">
+
+            <div class="stat-label">
+                Total Character Length
+            </div>
+
+            <div
+                class="stat-val"
+                id="stat-chars"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-node">
+
+            <div class="stat-label">
+                Bitrate Volumetric
+            </div>
+
+            <div
+                class="stat-val"
+                id="stat-bytes"
+            >
+                0 B
+            </div>
+
+        </div>
+
+
+        <div class="stat-node">
+
+            <div class="stat-label">
+                Detected Syntax Arch
+            </div>
+
+            <div
+                class="stat-val"
+                id="stat-arch"
+            >
+                GENERIC
+            </div>
+
+        </div>
+
+
+        <div class="stat-node">
+
+            <div class="stat-label">
+                Cyber Integrity Checksum
+            </div>
+
+            <div
+                class="stat-val"
+                id="stat-checksum"
+            >
+                00000
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         LOGGER
+    ================================== -->
+
+    <section
+        id="logPanel"
+        class="logger-panel"
+        aria-label="System Log"
+    >
+
+        <div class="log-line">
+            <span class="log-time">
+                [SYSTEM]
+            </span>
+            &gt; Quantum System Initialization Complete.
+        </div>
+
+        <div class="log-line">
+            <span class="log-time">
+                [SYSTEM]
+            </span>
+            &gt; Ready for bidirectional operations...
+        </div>
+
+    </section>
+
+
+    <footer>
+        ULTRA CYBERNETIC QUANTUM MATRIX v10.1
+        <br>
+        TEXT ↔ NUMBER CONVERSION ENGINE
+    </footer>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   1. PARTICLE BACKGROUND
+========================================================= */
+
+const canvas =
+    document.getElementById("particle-canvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let dots = [];
+
+
+function initCanvas() {
+
+    canvas.width =
+        window.innerWidth;
+
+    canvas.height =
+        window.innerHeight;
+}
+
+
+function createParticles() {
+
+    dots = [];
+
+    const count =
+        Math.min(
+            80,
+            Math.max(
+                30,
+                Math.floor(
+                    window.innerWidth / 18
+                )
+            )
+        );
+
+    for (let i = 0; i < count; i++) {
+
+        dots.push({
+
+            x:
+                Math.random()
+                * canvas.width,
+
+            y:
+                Math.random()
+                * canvas.height,
+
+            r:
+                Math.random()
+                * 2 + 0.5,
+
+            dx:
+                (Math.random() - 0.5)
+                * 0.5,
+
+            dy:
+                (Math.random() - 0.5)
+                * 0.5
+        });
+    }
+}
+
+
+function drawParticles() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.fillStyle =
+        "#00f3ff";
+
+    dots.forEach(p => {
+
+        ctx.beginPath();
+
+        ctx.arc(
+            p.x,
+            p.y,
+            p.r,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (
+            p.x < 0 ||
+            p.x > canvas.width
+        ) {
+            p.dx *= -1;
+        }
+
+        if (
+            p.y < 0 ||
+            p.y > canvas.height
+        ) {
+            p.dy *= -1;
+        }
+
+    });
+
+    requestAnimationFrame(
+        drawParticles
+    );
+}
+
+
+initCanvas();
+createParticles();
+
+window.addEventListener(
+    "resize",
+    () => {
+        initCanvas();
+        createParticles();
+    }
+);
+
+drawParticles();
+
+
+/* =========================================================
+   2. LOGGER
+========================================================= */
+
+function pushLog(msg) {
+
+    const panel =
+        document.getElementById(
+            "logPanel"
+        );
+
+    const line =
+        document.createElement(
+            "div"
+        );
+
+    line.className =
+        "log-line";
+
+    const time =
+        new Date().toLocaleTimeString(
+            "th-TH"
+        );
+
+    line.innerHTML =
+        `<span class="log-time">
+            [${time}]
+        </span> &gt; ${escapeHTML(msg)}`;
+
+    panel.appendChild(line);
+
+    panel.scrollTop =
+        panel.scrollHeight;
+}
+
+
+/* =========================================================
+   3. SECURITY HELPER
+========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   4. LANGUAGE DETECTOR
+========================================================= */
+
+function detectSyntax(val) {
+
+    if (!val.trim()) {
+
+        return {
+            name: "รอรับข้อมูล",
+            color: "var(--cyber-purple)"
+        };
+    }
+
+    if (
+        val.includes("def ") ||
+        val.includes("print(")
+    ) {
+
+        return {
+            name: "Python Architecture",
+            color: "var(--cyber-cyan)"
+        };
+    }
+
+    if (
+        val.includes("public static") ||
+        val.includes("System.out")
+    ) {
+
+        return {
+            name: "Java Kernel",
+            color: "var(--cyber-gold)"
+        };
+    }
+
+    if (
+        val.includes("#include") ||
+        val.includes("cout <<")
+    ) {
+
+        return {
+            name: "C++ Memory Layer",
+            color: "var(--cyber-magenta)"
+        };
+    }
+
+    if (
+        val.includes("function") ||
+        val.includes("console.log")
+    ) {
+
+        return {
+            name: "JavaScript V8 Engine",
+            color: "var(--cyber-neon)"
+        };
+    }
+
+    if (
+        val.includes("<html") ||
+        val.includes("<!DOCTYPE html")
+    ) {
+
+        return {
+            name: "HTML Web Architecture",
+            color: "var(--cyber-gold)"
+        };
+    }
+
+    if (
+        val.includes("local ") ||
+        val.includes("function ")
+    ) {
+
+        return {
+            name: "Lua Architecture",
+            color: "var(--cyber-purple)"
+        };
+    }
+
+    return {
+        name: "Universal Code/Text",
+        color: "var(--cyber-cyan)"
+    };
+}
+
+
+/* =========================================================
+   5. PROCESS LOCK
+========================================================= */
+
+let isProcessing = false;
+
+
+/* =========================================================
+   6. TEXT → NUMBER
+========================================================= */
+
+function executeTextToNumbers() {
+
+    if (isProcessing) {
+        return;
+    }
+
+    isProcessing = true;
+
+    try {
+
+        const text =
+            document.getElementById(
+                "textCore"
+            ).value;
+
+        const base =
+            parseInt(
+                document.getElementById(
+                    "baseConfig"
+                ).value,
+                10
+            );
+
+        const delimOpt =
+            document.getElementById(
+                "delimConfig"
+            ).value;
+
+        const crypto =
+            document.getElementById(
+                "cryptoConfig"
+            ).value;
+
+
+        const syntax =
+            detectSyntax(text);
+
+
+        const tagEl =
+            document.getElementById(
+                "langTag"
+            );
+
+
+        tagEl.innerText =
+            `โหมด: ${syntax.name}`;
+
+        tagEl.style.color =
+            syntax.color;
+
+        tagEl.style.borderColor =
+            syntax.color;
+
+
+        if (!text) {
+
+            document.getElementById(
+                "numCore"
+            ).value = "";
+
+            updateReadableOutput("");
+
+            updateMetrics(
+                0,
+                0,
+                "รอรับข้อมูล",
+                0
+            );
+
+            isProcessing = false;
+
+            return;
+        }
+
+
+        const delim =
+            delimOpt === "\\n"
+                ? "\n"
+                : delimOpt;
+
+
+        const numericArray = [];
+
+        let checksum = 0;
+
+
+        for (
+            let i = 0;
+            i < text.length;
+            i++
+        ) {
+
+            let code =
+                text.charCodeAt(i);
+
+            checksum += code;
+
+
+            /* Encryption Layer */
+
+            if (
+                crypto === "xor"
+            ) {
+
+                code =
+                    code ^ 0x3F;
+            }
+
+            else if (
+                crypto === "invert"
+            ) {
+
+                code =
+                    65535 - code;
+            }
+
+
+            /* Convert Base */
+
+            let strVal =
+                code.toString(base);
+
+
+            if (base === 16) {
+
+                strVal =
+                    "0x" +
+                    strVal.toUpperCase();
+            }
+
+            else if (base === 8) {
+
+                strVal =
+                    "0" +
+                    strVal;
+            }
+
+
+            numericArray.push(
+                strVal
+            );
+        }
+
+
+        const output =
+            numericArray.join(delim);
+
+
+        document.getElementById(
+            "numCore"
+        ).value = output;
+
+
+        /*
+            แสดง output ลง DOM โดยตรง
+            เพื่อให้หน้าเว็บมี representation
+            ของผลลัพธ์ที่ crawler สามารถมองเห็นได้
+        */
+
+        updateReadableOutput(
+            output
+        );
+
+
+        updateMetrics(
+            text.length,
+            new Blob([text]).size,
+            syntax.name,
+            checksum % 99999
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        pushLog(
+            "เกิดข้อผิดพลาดในการแปลงข้อมูล"
+        );
+    }
+
+    finally {
+
+        isProcessing = false;
+    }
+}
+
+
+/* =========================================================
+   7. NUMBER → TEXT
+========================================================= */
+
+function executeNumbersToText() {
+
+    if (isProcessing) {
+        return;
+    }
+
+    isProcessing = true;
+
+    try {
+
+        const numString =
+            document.getElementById(
+                "numCore"
+            ).value;
+
+
+        const base =
+            parseInt(
+                document.getElementById(
+                    "baseConfig"
+                ).value,
+                10
+            );
+
+
+        const crypto =
+            document.getElementById(
+                "cryptoConfig"
+            ).value;
+
+
+        if (!numString.trim()) {
+
+            document.getElementById(
+                "textCore"
+            ).value = "";
+
+            updateReadableOutput("");
+
+            updateMetrics(
+                0,
+                0,
+                "รอรับข้อมูล",
+                0
+            );
+
+            isProcessing = false;
+
+            return;
+        }
+
+
+        /*
+            รองรับ
+            Space
+            Comma
+            Dash
+            New Line
+        */
+
+        const segments =
+            numString
+                .trim()
+                .split(
+                    /[\s,:-]+/
+                );
+
+
+        let reconstructedText =
+            "";
+
+        let checksum = 0;
+
+
+        for (
+            let seg of segments
+        ) {
+
+            if (!seg) {
+                continue;
+            }
+
+
+            let numVal;
+
+
+            /*
+                ตรวจสอบ prefix
+            */
+
+            if (
+                /^0x/i.test(seg)
+            ) {
+
+                numVal =
+                    parseInt(
+                        seg.substring(2),
+                        16
+                    );
+            }
+
+            /*
+                Binary
+            */
+
+            else if (
+                /^[01]{7,}$/.test(seg) &&
+                base === 2
+            ) {
+
+                numVal =
+                    parseInt(
+                        seg,
+                        2
+                    );
+            }
+
+            /*
+                Octal
+            */
+
+            else if (
+                /^0[0-7]+$/.test(seg) &&
+                base === 8
+            ) {
+
+                numVal =
+                    parseInt(
+                        seg,
+                        8
+                    );
+            }
+
+            /*
+                Base ตามระบบที่เลือก
+            */
+
+            else {
+
+                numVal =
+                    parseInt(
+                        seg,
+                        base
+                    );
+            }
+
+
+            if (
+                Number.isNaN(numVal)
+            ) {
+
+                continue;
+            }
+
+
+            /*
+                Reverse crypto
+            */
+
+            if (
+                crypto === "xor"
+            ) {
+
+                numVal =
+                    numVal ^ 0x3F;
+            }
+
+            else if (
+                crypto === "invert"
+            ) {
+
+                numVal =
+                    65535 - numVal;
+            }
+
+
+            /*
+                ป้องกัน character
+                ที่ผิดช่วง Unicode
+            */
+
+            if (
+                numVal >= 0 &&
+                numVal <= 0x10FFFF
+            ) {
+
+                try {
+
+                    reconstructedText +=
+                        String.fromCodePoint(
+                            numVal
+                        );
+
+                }
+
+                catch {
+
+                    reconstructedText +=
+                        "\uFFFD";
+                }
+
+            }
+
+            checksum += numVal;
+        }
+
+
+        document.getElementById(
+            "textCore"
+        ).value =
+            reconstructedText;
+
+
+        updateReadableOutput(
+            numString
+        );
+
+
+        const syntax =
+            detectSyntax(
+                reconstructedText
+            );
+
+
+        const tagEl =
+            document.getElementById(
+                "langTag"
+            );
+
+
+        tagEl.innerText =
+            `โหมด: ${syntax.name}`;
+
+        tagEl.style.color =
+            syntax.color;
+
+        tagEl.style.borderColor =
+            syntax.color;
+
+
+        updateMetrics(
+            reconstructedText.length,
+            new Blob(
+                [reconstructedText]
+            ).size,
+            syntax.name,
+            checksum % 99999
+        );
+
+
+        pushLog(
+            "เรียงคืนค่าชุดตัวเลขกลับเป็นข้อความสำเร็จ"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        pushLog(
+            "ไม่สามารถอ่านชุดตัวเลขได้"
+        );
+
+    }
+
+    finally {
+
+        isProcessing = false;
+    }
+}
+
+
+/* =========================================================
+   8. FORCE RECOMPUTE
+========================================================= */
+
+function forceRecompute() {
+
+    pushLog(
+        "เปลี่ยนโครงสร้างข้อมูลกลางระบบ..."
+    );
+
+    executeTextToNumbers();
+}
+
+
+/* =========================================================
+   9. UPDATE SEO-FRIENDLY OUTPUT
+========================================================= */
+
+function updateReadableOutput(value) {
+
+    const output =
+        document.getElementById(
+            "searchReadableOutput"
+        );
+
+
+    if (!value) {
+
+        output.textContent =
+            "รอรับข้อมูล";
+
+        return;
+    }
+
+
+    /*
+        textContent ปลอดภัยกว่า innerHTML
+        สำหรับข้อมูลที่ผู้ใช้ป้อน
+    */
+
+    output.textContent =
+        value;
+}
+
+
+/* =========================================================
+   10. METRICS
+========================================================= */
+
+function updateMetrics(
+    chars,
+    bytes,
+    arch,
+    chk
+) {
+
+    document.getElementById(
+        "stat-chars"
+    ).innerText =
+        chars;
+
+
+    document.getElementById(
+        "stat-bytes"
+    ).innerText =
+        chars === 0
+            ? "0 B"
+            : `${bytes} Bytes`;
+
+
+    document.getElementById(
+        "stat-arch"
+    ).innerText =
+        String(arch)
+            .toUpperCase();
+
+
+    document.getElementById(
+        "stat-checksum"
+    ).innerText =
+        String(chk)
+            .padStart(
+                5,
+                "0"
+            );
+}
+
+
+/* =========================================================
+   11. WIPE
+========================================================= */
+
+function wipeCore() {
+
+    document.getElementById(
+        "textCore"
+    ).value = "";
+
+
+    document.getElementById(
+        "numCore"
+    ).value = "";
+
+
+    updateReadableOutput("");
+
+
+    updateMetrics(
+        0,
+        0,
+        "รอรับข้อมูล",
+        0
+    );
+
+
+    const tagEl =
+        document.getElementById(
+            "langTag"
+        );
+
+
+    tagEl.innerText =
+        "โหมด: รอรับข้อมูล";
+
+
+    tagEl.style.color =
+        "var(--cyber-purple)";
+
+
+    tagEl.style.borderColor =
+        "var(--cyber-purple)";
+
+
+    pushLog(
+        "เคลียร์หน่วยความจำในระบบหลักหมดจด"
+    );
+}
+
+
+/* =========================================================
+   12. DOWNLOAD TXT
+========================================================= */
+
+function downloadMatrixOutput() {
+
+    const outData =
+        document.getElementById(
+            "numCore"
+        ).value;
+
+
+    if (!outData) {
+
+        alert(
+            "❌ ระบบว่างเปล่า ไม่พบชุดตัวเลข"
+        );
+
+        return;
+    }
+
+
+    const blob =
+        new Blob(
+            [outData],
+            {
+                type:
+                    "text/plain;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const hiddenAnchor =
+        document.createElement("a");
+
+
+    hiddenAnchor.href =
+        url;
+
+
+    hiddenAnchor.download =
+        `cyber_matrix_export_${Date.now()}.txt`;
+
+
+    document.body.appendChild(
+        hiddenAnchor
+    );
+
+
+    hiddenAnchor.click();
+
+
+    document.body.removeChild(
+        hiddenAnchor
+    );
+
+
+    setTimeout(
+        () => URL.revokeObjectURL(url),
+        1000
+    );
+
+
+    pushLog(
+        "ส่งออกชุดไฟล์ .txt สำเร็จ"
+    );
+}
+
+
+/* =========================================================
+   13. COPY CLIPBOARD
+========================================================= */
+
+async function copyToClipboard() {
+
+    const target =
+        document.getElementById(
+            "numCore"
+        );
+
+
+    if (!target.value) {
+
+        alert(
+            "ไม่มีข้อมูลตัวเลขให้คัดลอก"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            target.value
+        );
+
+    }
+
+    catch {
+
+        target.select();
+
+        document.execCommand(
+            "copy"
+        );
+    }
+
+
+    pushLog(
+        "คัดลอกรหัสตัวเลขลงคลิปบอร์ดสำเร็จ"
+    );
+
+
+    alert(
+        "📋 คัดลอกรหัสตัวเลขสำเร็จ!"
+    );
+}
+
+
+/* =========================================================
+   14. SAMPLE INPUT
+========================================================= */
+
+function injectSample(type) {
+
+    if (type === 1) {
+
+        const sample =
+`def activate_lift():
+    print("Lift Engine V10 Cybernetic Online!")`;
+
+
+        document.getElementById(
+            "textCore"
+        ).value =
+            sample;
+
+
+        executeTextToNumbers();
+
+
+        pushLog(
+            "โหลด Python sample สำเร็จ"
+        );
+
+    }
+
+    else {
+
+        /*
+            "Cyber Ok"
+            C = 67
+            y = 121
+            b = 98
+            e = 101
+            r = 114
+            space = 32
+            O = 79
+            k = 107
+        */
+
+        document.getElementById(
+            "numCore"
+        ).value =
+            "67 121 98 101 114 32 79 107";
+
+
+        executeNumbersToText();
+
+
+        pushLog(
+            "โหลด numeric sample สำเร็จ"
+        );
+    }
+}
+
+
+/* =========================================================
+   15. INITIAL SYSTEM STATE
+========================================================= */
+
+updateMetrics(
+    0,
+    0,
+    "GENERIC",
+    0
+);
+
+updateReadableOutput("");
+
+</script>
+
+</body>
+</html>

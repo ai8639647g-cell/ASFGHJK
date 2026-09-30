@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HUB PORTAL MULTIVERSE</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0a0a12;
+            --card-bg: rgba(20, 20, 35, 0.65);
+            --primary-neon: #00ffcc;
+            --secondary-neon: #ff007f;
+            --text-color: #ffffff;
+            --text-muted: #8fa0dd;
+            --grid-color: rgba(0, 255, 204, 0.035);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Kanit', sans-serif;
+            position: relative;
+        }
+
+        /* =========================
+           BACKGROUND
+        ========================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -3;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(
+                circle,
+                rgba(0, 255, 204, 0.15) 0%,
+                transparent 70%
+            );
+            top: -100px;
+            left: -100px;
+            z-index: -2;
+            filter: blur(50px);
+            pointer-events: none;
+        }
+
+        .glow-orb-2 {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(
+                circle,
+                rgba(255, 0, 127, 0.12) 0%,
+                transparent 70%
+            );
+            bottom: -150px;
+            right: -150px;
+            z-index: -2;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 50px 20px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            text-align: center;
+            margin-bottom: 55px;
+            animation: fadeInDown 1s ease;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+
+            background: linear-gradient(
+                45deg,
+                var(--primary-neon),
+                var(--secondary-neon)
+            );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            margin-bottom: 12px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+        }
+
+        /* =========================
+           MAIN PORTALS
+        ========================= */
+
+        .main-portals {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(320px, 1fr)
+            );
+
+            gap: 30px;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .portal-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 24px;
+            padding: 40px 30px;
+
+            text-align: center;
+
+            position: relative;
+            overflow: hidden;
+
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+            min-height: 320px;
+
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.5);
+
+            cursor: pointer;
+            text-decoration: none;
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .portal-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.04)
+                );
+
+            pointer-events: none;
+        }
+
+        .card-1 {
+            border-bottom: 4px solid var(--primary-neon);
+        }
+
+        .card-1:hover {
+            transform: translateY(-8px);
+
+            box-shadow:
+                0 0 40px rgba(0, 255, 204, 0.25);
+
+            border-color: var(--primary-neon);
+        }
+
+        .card-2 {
+            border-bottom: 4px solid var(--secondary-neon);
+        }
+
+        .card-2:hover {
+            transform: translateY(-8px);
+
+            box-shadow:
+                0 0 40px rgba(255, 0, 127, 0.25);
+
+            border-color: var(--secondary-neon);
+        }
+
+        /* =========================
+           ICONS
+        ========================= */
+
+        .icon-wrapper {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card-1 .icon-wrapper {
+            color: var(--primary-neon);
+            text-shadow:
+                0 0 20px rgba(0, 255, 204, 0.5);
+        }
+
+        .card-2 .icon-wrapper {
+            color: var(--secondary-neon);
+            text-shadow:
+                0 0 20px rgba(255, 0, 127, 0.5);
+        }
+
+        /* =========================
+           CARD TEXT
+        ========================= */
+
+        .portal-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .portal-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           ENTER BUTTON
+        ========================= */
+
+        .enter-btn {
+            display: inline-block;
+
+            padding: 12px 35px;
+
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+
+            font-size: 0.85rem;
+
+            text-decoration: none;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .card-1 .enter-btn {
+            color: #000;
+            background: var(--primary-neon);
+
+            box-shadow:
+                0 0 15px rgba(0, 255, 204, 0.3);
+        }
+
+        .card-2 .enter-btn {
+            color: #fff;
+            background: var(--secondary-neon);
+
+            box-shadow:
+                0 0 15px rgba(255, 0, 127, 0.3);
+        }
+
+        /* =========================
+           ADDITIONAL SECTION
+        ========================= */
+
+        .additional-section {
+            width: 100%;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 25px;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            border-left: 4px solid var(--primary-neon);
+            padding-left: 15px;
+        }
+
+        .custom-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fill, minmax(260px, 1fr));
+
+            gap: 20px;
+            width: 100%;
+        }
+
+        .custom-card {
+            background: rgba(255, 255, 255, 0.03);
+
+            border: 1px solid rgba(255, 255, 255, 0.06);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            position: relative;
+
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .custom-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+
+            border-color:
+                rgba(255, 255, 255, 0.15);
+
+            transform: translateX(5px);
+        }
+
+        .custom-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            text-decoration: none;
+            color: #fff;
+
+            flex-grow: 1;
+
+            min-width: 0;
+        }
+
+        .custom-icon {
+            width: 45px;
+            height: 45px;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--primary-neon);
+            font-size: 1.2rem;
+        }
+
+        .custom-name {
+            font-weight: 600;
+            font-size: 1rem;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           DELETE BUTTON
+        ========================= */
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+
+            color: #ff4a4a;
+
+            cursor: pointer;
+
+            padding: 8px;
+            border-radius: 8px;
+
+            font-size: 1rem;
+
+            opacity: 0.5;
+
+            flex-shrink: 0;
+
+            transition:
+                opacity 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+            background: rgba(255, 74, 74, 0.1);
+        }
+
+        /* =========================
+           ADMIN BUTTON
+        ========================= */
+
+        .admin-trigger {
+            margin-top: 50px;
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            border:
+                1px dashed rgba(255, 255, 255, 0.2);
+
+            padding: 15px 30px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            color: var(--text-muted);
+
+            font-weight: 500;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            transition:
+                color 0.25s ease,
+                border-color 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .admin-trigger:hover {
+            color: #fff;
+
+            border-color:
+                var(--primary-neon);
+
+            background:
+                rgba(0, 255, 204, 0.04);
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+
+            background:
+                rgba(5, 5, 10, 0.85);
+
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            z-index: 100;
+
+            opacity: 0;
+            pointer-events: none;
+
+            padding: 20px;
+
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #111122;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.1);
+
+            border-radius: 24px;
+
+            padding: 35px;
+
+            width: 100%;
+            max-width: 450px;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.6);
+
+            transform: scale(0.9);
+
+            transition:
+                transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+
+            color: #fff;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+
+            color: var(--text-muted);
+
+            font-size: 1.5rem;
+
+            cursor: pointer;
+
+            transition:
+                color 0.2s ease;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 0.85rem;
+
+            color: var(--text-muted);
+
+            margin-bottom: 8px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            background:
+                rgba(255, 255, 255, 0.03);
+
+            border:
+                1px solid rgba(255, 255, 255, 0.1);
+
+            padding: 12px 15px;
+
+            border-radius: 10px;
+
+            color: #fff;
+
+            font-family: 'Kanit', sans-serif;
+
+            font-size: 1rem;
+
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color:
+                var(--primary-neon);
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            box-shadow:
+                0 0 15px rgba(0, 255, 204, 0.08);
+        }
+
+        .submit-btn {
+            width: 100%;
+
+            padding: 14px;
+
+            background:
+                linear-gradient(
+                    45deg,
+                    var(--primary-neon),
+                    #00b3ff
+                );
+
+            border: none;
+
+            border-radius: 10px;
+
+            color: #000;
+
+            font-family: 'Kanit', sans-serif;
+
+            font-weight: 600;
+
+            font-size: 1rem;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 15px
+                rgba(0, 255, 204, 0.2);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 5px 25px
+                rgba(0, 255, 204, 0.4);
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+
+            color: #59658f;
+
+            font-size: 0.8rem;
+
+            padding: 25px 20px 35px;
+        }
+
+        /* =========================
+           ANIMATION
+        ========================= */
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 768px) {
+
+            .container {
+                padding: 35px 15px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            header {
+                margin-bottom: 40px;
+            }
+
+            .main-portals {
+                grid-template-columns: 1fr;
+            }
+
+            .portal-card {
+                min-height: 280px;
+                padding: 30px 20px;
+            }
+
+            .modal-content {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            .portal-title {
+                font-size: 1.35rem;
+            }
+
+            .portal-desc {
+                font-size: 0.88rem;
+            }
+
+            .admin-trigger {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Effects -->
+    <div class="glow-orb"></div>
+    <div class="glow-orb-2"></div>
+
+    <main class="container">
+
+        <!-- HEADER -->
+        <header>
+            <h1>Multiverse Hub</h1>
+
+            <p>
+                ระบบศูนย์รวมลิงก์เข้าสู่เว็บไซต์หลักและโปรเจกต์ของคุณ
+            </p>
+        </header>
+
+        <!-- MAIN PORTALS -->
+        <section class="main-portals">
+
+            <!-- PORTAL 1 -->
+            <a
+                class="portal-card card-1"
+                href="https://ai8639647g-cell.github.io/GGB/"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <div>
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+
+                    <div class="portal-title">
+                        GGB Matrix Decoder
+                    </div>
+
+                    <div class="portal-desc">
+                        ระบบจำลองการประมวลผล ถอดรหัสชุดฐานข้อมูล
+                        และระบบคำนวณตัวเลขระดับสูง
+                    </div>
+                </div>
+
+                <span class="enter-btn">
+                    เข้าสู่เว็บไซต์
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </span>
+
+            </a>
+
+            <!-- PORTAL 2 -->
+            <a
+                class="portal-card card-2"
+                href="https://ai8639647g-cell.github.io/script/"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <div>
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+
+                    <div class="portal-title">
+                        Quantum Script Center
+                    </div>
+
+                    <div class="portal-desc">
+                        คลังโค้ดจำลอง แหล่งรวมชุดสคริปต์อัจฉริยะ
+                        และคอมไพเลอร์แบบเรียลไทม์
+                    </div>
+                </div>
+
+                <span class="enter-btn">
+                    เข้าสู่เว็บไซต์
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </span>
+
+            </a>
+
+        </section>
+
+        <!-- ADDITIONAL LINKS -->
+        <section
+            class="additional-section"
+            id="additionalSection"
+        >
+
+            <h2 class="section-title">
+                <i class="fa-solid fa-layer-group"></i>
+                คลังเว็บไซต์เพิ่มเติมที่คุณสร้าง
+            </h2>
+
+            <div
+                class="custom-grid"
+                id="customLinksGrid"
+            ></div>
+
+        </section>
+
+        <!-- ADMIN BUTTON -->
+        <button
+            class="admin-trigger"
+            id="openModalBtn"
+            type="button"
+        >
+            <i class="fa-solid fa-plus"></i>
+
+            เปิดแผงควบคุมหลังบ้านเพื่อเพิ่มลิงก์ใหม่
+        </button>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        HUB PORTAL MULTIVERSE
+        <br>
+        Personal Project Portal
+    </footer>
+
+    <!-- MODAL -->
+    <div
+        class="modal"
+        id="linkModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-title">
+
+                <span id="modalTitle">
+                    <i class="fa-solid fa-link"></i>
+                    เพิ่มลิงก์ระบบใหม่
+                </span>
+
+                <button
+                    class="close-modal"
+                    id="closeModalBtn"
+                    type="button"
+                    aria-label="ปิด"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+            <form id="addLinkForm">
+
+                <div class="form-group">
+
+                    <label for="linkName">
+                        ชื่อของหน้าเว็บ / โปรเจกต์
+                    </label>
+
+                    <input
+                        type="text"
+                        id="linkName"
+                        placeholder="เช่น My New Website"
+                        required
+                        maxlength="100"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="linkUrl">
+                        ที่อยู่ URL ของเว็บไซต์ (Link)
+                    </label>
+
+                    <input
+                        type="url"
+                        id="linkUrl"
+                        placeholder="https://example.com/"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    class="submit-btn"
+                    type="submit"
+                >
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    บันทึกและติดตั้งลิงก์
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+        /* =========================================
+           MULTIVERSE HUB JAVASCRIPT
+        ========================================= */
+
+        // โหลดข้อมูลลิงก์จาก LocalStorage
+        let customLinks = [];
+
+        try {
+            customLinks =
+                JSON.parse(
+                    localStorage.getItem("multiverse_links")
+                ) || [];
+
+            if (!Array.isArray(customLinks)) {
+                customLinks = [];
+            }
+
+        } catch (error) {
+            console.error(
+                "ไม่สามารถอ่านข้อมูล LocalStorage:",
+                error
+            );
+
+            customLinks = [];
+        }
+
+
+        // Element ต่าง ๆ
+        const openModalBtn =
+            document.getElementById("openModalBtn");
+
+        const closeModalBtn =
+            document.getElementById("closeModalBtn");
+
+        const linkModal =
+            document.getElementById("linkModal");
+
+        const addLinkForm =
+            document.getElementById("addLinkForm");
+
+        const customLinksGrid =
+            document.getElementById("customLinksGrid");
+
+        const additionalSection =
+            document.getElementById("additionalSection");
+
+
+        // เปิด Modal
+        openModalBtn.addEventListener("click", () => {
+            linkModal.classList.add("active");
+
+            setTimeout(() => {
+                document
+                    .getElementById("linkName")
+                    .focus();
+            }, 100);
+        });
+
+
+        // ปิด Modal
+        closeModalBtn.addEventListener("click", () => {
+            linkModal.classList.remove("active");
+        });
+
+
+        // คลิกพื้นหลังเพื่อปิด
+        linkModal.addEventListener("click", (event) => {
+
+            if (event.target === linkModal) {
+                linkModal.classList.remove("active");
+            }
+
+        });
+
+
+        // ปิดด้วยปุ่ม Escape
+        document.addEventListener("keydown", (event) => {
+
+            if (
+                event.key === "Escape" &&
+                linkModal.classList.contains("active")
+            ) {
+                linkModal.classList.remove("active");
+            }
+
+        });
+
+
+        // ฟังก์ชันป้องกัน HTML Injection
+        function escapeHTML(value) {
+
+            const div = document.createElement("div");
+
+            div.textContent = value;
+
+            return div.innerHTML;
+        }
+
+
+        // ตรวจสอบ URL
+        function isValidURL(value) {
+
+            try {
+
+                const url = new URL(value);
+
+                return (
+                    url.protocol === "http:" ||
+                    url.protocol === "https:"
+                );
+
+            } catch (error) {
+
+                return false;
+
+            }
+        }
+
+
+        // วาดรายการลิงก์
+        function renderLinks() {
+
+            customLinksGrid.innerHTML = "";
+
+            if (customLinks.length === 0) {
+
+                additionalSection.style.display = "none";
+
+                return;
+            }
+
+
+            additionalSection.style.display = "block";
+
+
+            customLinks.forEach((item, index) => {
+
+                const card =
+                    document.createElement("div");
+
+                card.className = "custom-card";
+
+
+                card.innerHTML = `
+                    <a
+                        href="${escapeHTML(item.url)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="custom-info"
+                    >
+
+                        <div class="custom-icon">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+
+                        <div class="custom-name">
+                            ${escapeHTML(item.name)}
+                        </div>
+
+                    </a>
+
+                    <button
+                        class="delete-btn"
+                        type="button"
+                        data-index="${index}"
+                        title="ลบลิงก์นี้"
+                        aria-label="ลบลิงก์นี้"
+                    >
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+
+
+                const deleteButton =
+                    card.querySelector(".delete-btn");
+
+
+                deleteButton.addEventListener(
+                    "click",
+                    () => deleteLink(index)
+                );
+
+
+                customLinksGrid.appendChild(card);
+
+            });
+
+        }
+
+
+        // เพิ่มลิงก์
+        addLinkForm.addEventListener(
+            "submit",
+            (event) => {
+
+                event.preventDefault();
+
+
+                const name =
+                    document
+                        .getElementById("linkName")
+                        .value
+                        .trim();
+
+
+                let url =
+                    document
+                        .getElementById("linkUrl")
+                        .value
+                        .trim();
+
+
+                // ถ้าผู้ใช้พิมพ์ example.com
+                // ให้เติม https:// ให้อัตโนมัติ
+                if (
+                    url &&
+                    !/^https?:\/\//i.test(url)
+                ) {
+                    url = "https://" + url;
+                }
+
+
+                if (!name) {
+
+                    alert(
+                        "กรุณากรอกชื่อหน้าเว็บหรือโปรเจกต์"
+                    );
+
+                    return;
+                }
+
+
+                if (!isValidURL(url)) {
+
+                    alert(
+                        "URL ไม่ถูกต้อง กรุณาใส่ลิงก์ เช่น https://example.com/"
+                    );
+
+                    return;
+                }
+
+
+                // เพิ่มข้อมูล
+                customLinks.push({
+                    name: name,
+                    url: url
+                });
+
+
+                // บันทึก LocalStorage
+                localStorage.setItem(
+                    "multiverse_links",
+                    JSON.stringify(customLinks)
+                );
+
+
+                // แสดงผลใหม่
+                renderLinks();
+
+
+                // ล้างฟอร์ม
+                addLinkForm.reset();
+
+
+                // ปิด Modal
+                linkModal.classList.remove("active");
+
+            }
+        );
+
+
+        // ลบลิงก์
+        function deleteLink(index) {
+
+            if (
+                !Number.isInteger(index) ||
+                index < 0 ||
+                index >= customLinks.length
+            ) {
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    "คุณแน่ใจใช่ไหมที่จะลบลิงก์ระบบนี้ออก?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            customLinks.splice(index, 1);
+
+
+            localStorage.setItem(
+                "multiverse_links",
+                JSON.stringify(customLinks)
+            );
+
+
+            renderLinks();
+
+        }
+
+
+        // แสดงข้อมูลทันทีเมื่อเปิดเว็บ
+        renderLinks();
+
+    </script>
+
+</body>
+</html>

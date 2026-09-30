@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Multiverse Hub</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background:
+                radial-gradient(
+                    circle at 50% 30%,
+                    #0f172a 0%,
+                    #090d16 60%,
+                    #020408 100%
+                );
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .cyber-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .glow-text {
+            text-shadow:
+                0 0 12px rgba(56, 189, 248, 0.7),
+                0 0 25px rgba(56, 189, 248, 0.4);
+        }
+
+        .glass-panel {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15, 23, 42, 0.6) 0%,
+                    rgba(30, 41, 59, 0.4) 100%
+                );
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .cyber-card {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(10, 15, 30, 0.7) 0%,
+                    rgba(15, 23, 42, 0.5) 100%
+                );
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            transition:
+                all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .cyber-card:hover {
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow:
+                0 0 30px rgba(56, 189, 248, 0.25),
+                inset 0 0 12px rgba(56, 189, 248, 0.1);
+            transform: translateY(-6px) scale(1.01);
+        }
+
+        .cyber-grid {
+            background-image:
+                linear-gradient(
+                    rgba(56, 189, 248, 0.03) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(56, 189, 248, 0.03) 1px,
+                    transparent 1px
+                );
+            background-size: 40px 40px;
+            background-position: center top;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020408;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+            border: 2px solid #020408;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        .modal-visible {
+            opacity: 1 !important;
+        }
+
+        .modal-visible .modal-box {
+            transform: scale(1) !important;
+        }
+    </style>
+</head>
+
+<body class="text-slate-100 flex flex-col justify-between min-h-screen cyber-grid relative">
+
+    <!-- Ambient Light Effects -->
+    <div
+        class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw]
+               bg-sky-500/10 rounded-full blur-[120px]
+               pointer-events-none">
+    </div>
+
+    <div
+        class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw]
+               bg-indigo-500/10 rounded-full blur-[120px]
+               pointer-events-none">
+    </div>
+
+    <!-- Header -->
+    <header class="container mx-auto px-4 pt-12 pb-6 relative z-10 text-center">
+
+        <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full
+                   border border-sky-500/30 bg-sky-500/5
+                   text-xs text-sky-400 cyber-font tracking-widest
+                   uppercase mb-4 animate-pulse">
+
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+
+            Main Node Terminal
+        </div>
+
+        <h1
+            class="cyber-font text-5xl md:text-7xl font-black
+                   tracking-tighter text-transparent bg-clip-text
+                   bg-gradient-to-r from-sky-400 via-indigo-200 to-sky-400
+                   glow-text mb-3">
+
+            MULTIVERSE HUB
+
+        </h1>
+
+        <p
+            class="text-xs md:text-sm text-slate-400 max-w-xl mx-auto
+                   font-light tracking-widest uppercase">
+
+            ระบบศูนย์รวมและจัดการลิงก์เครือข่ายความเร็วสูงแกนกลางควอนตัม
+
+        </p>
+
+        <div
+            class="w-32 h-[2px]
+                   bg-gradient-to-r from-transparent via-sky-500
+                   to-transparent mx-auto mt-6">
+        </div>
+
+    </header>
+
+
+    <!-- Main -->
+    <main
+        class="container mx-auto px-4 py-6 max-w-7xl
+               relative z-10 flex-grow">
+
+        <!-- Controls -->
+        <div
+            class="flex flex-col sm:flex-row justify-between
+                   items-center mb-10 gap-4 glass-panel p-4
+                   rounded-2xl border border-slate-800/80 shadow-xl">
+
+            <div class="flex items-center gap-3 text-sm text-slate-300">
+
+                <div class="relative flex h-3 w-3">
+
+                    <span
+                        class="animate-ping absolute inline-flex
+                               h-full w-full rounded-full
+                               bg-emerald-400 opacity-75">
+                    </span>
+
+                    <span
+                        class="relative inline-flex rounded-full
+                               h-3 w-3 bg-emerald-500">
+                    </span>
+
+                </div>
+
+                <span class="font-light tracking-wide">
+                    สถานะควอนตัมเน็ตเวิร์ก:
+                </span>
+
+                <span
+                    class="cyber-font text-emerald-400 font-bold
+                           tracking-wider">
+
+                    ONLINE [STABLE]
+
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                onclick="openModal()"
+                class="w-full sm:w-auto
+                       bg-gradient-to-r from-sky-600 to-indigo-600
+                       hover:from-sky-500 hover:to-indigo-500
+                       text-white font-medium px-6 py-3 rounded-xl
+                       transition-all flex items-center justify-center
+                       gap-2.5 shadow-lg shadow-sky-500/20
+                       hover:shadow-sky-500/40
+                       active:scale-95 cursor-pointer group">
+
+                <i
+                    class="fa-solid fa-plus text-xs
+                           group-hover:rotate-90
+                           transition-transform duration-300">
+                </i>
+
+                บันทึกโครงข่ายเพิ่ม
+
+            </button>
+
+        </div>
+
+
+        <!-- Section Title -->
+        <div class="mb-6 flex items-center gap-3">
+
+            <div class="h-[1px] w-6 bg-sky-500/50"></div>
+
+            <h3
+                class="cyber-font text-xs font-bold tracking-widest
+                       text-sky-400 uppercase">
+
+                System Core Linkages
+
+            </h3>
+
+            <div
+                class="h-[1px] flex-grow
+                       bg-gradient-to-r from-sky-500/20
+                       to-transparent">
+            </div>
+
+        </div>
+
+
+        <!-- Links -->
+        <div
+            id="links-container"
+            class="grid grid-cols-1 md:grid-cols-2
+                   lg:grid-cols-3 gap-6">
+        </div>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer
+        class="container mx-auto px-4 py-8 text-center
+               text-[10px] md:text-xs text-slate-500
+               relative z-10 border-t border-slate-900/60 mt-16">
+
+        <div class="cyber-font tracking-widest text-slate-600">
+
+            // OPERATIONAL LEVEL: CORE TERMINAL //
+            GLOBAL ACCESS BRAND MATRIX SYSTEM v3.0 //
+
+        </div>
+
+        <div class="mt-3 text-slate-700">
+            MULTIVERSE HUB © 2026
+        </div>
+
+    </footer>
+
+
+    <!-- Add Link Modal -->
+    <div
+        id="add-modal"
+        class="fixed inset-0 bg-black/85 backdrop-blur-md
+               z-50 flex items-center justify-center p-4
+               hidden opacity-0 transition-opacity duration-300">
+
+        <div
+            class="modal-box bg-slate-950 border border-slate-800/80
+                   w-full max-w-md rounded-2xl overflow-hidden
+                   shadow-2xl transform scale-95
+                   transition-transform duration-300">
+
+            <!-- Modal Header -->
+            <div
+                class="bg-gradient-to-r from-slate-900
+                       to-slate-950 px-6 py-4
+                       border-b border-slate-800
+                       flex justify-between items-center">
+
+                <h3
+                    class="font-semibold text-base text-sky-400
+                           flex items-center gap-2.5
+                           cyber-font tracking-wide">
+
+                    <i
+                        class="fa-solid fa-satellite-dish animate-pulse">
+                    </i>
+
+                    CONNECT NEW NODE
+
+                </h3>
+
+                <button
+                    type="button"
+                    onclick="closeModal()"
+                    class="text-slate-400 hover:text-rose-400
+                           transition-colors cursor-pointer">
+
+                    <i class="fa-solid fa-xmark text-lg"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- Form -->
+            <form
+                id="link-form"
+                onsubmit="handleSaveLink(event)"
+                class="p-6 space-y-4">
+
+                <!-- Name -->
+                <div>
+
+                    <label
+                        for="link-name"
+                        class="block text-[11px]
+                               font-medium text-slate-400
+                               mb-1.5 uppercase tracking-wider">
+
+                        ชื่อระบบปลายทาง
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="link-name"
+                        required
+                        placeholder="เช่น My Private Cloud Node"
+                        class="w-full bg-slate-900/60
+                               border border-slate-800 rounded-xl
+                               px-3.5 py-2.5 text-sm text-slate-200
+                               focus:outline-none focus:border-sky-500
+                               focus:ring-1 focus:ring-sky-500/20
+                               transition-all
+                               placeholder-slate-600">
+
+                </div>
+
+
+                <!-- URL -->
+                <div>
+
+                    <label
+                        for="link-url"
+                        class="block text-[11px]
+                               font-medium text-slate-400
+                               mb-1.5 uppercase tracking-wider">
+
+                        ที่อยู่ URL (ลิงก์ปลายทาง)
+
+                    </label>
+
+                    <input
+                        type="url"
+                        id="link-url"
+                        required
+                        placeholder="https://example.com"
+                        class="w-full bg-slate-900/60
+                               border border-slate-800 rounded-xl
+                               px-3.5 py-2.5 text-sm text-slate-200
+                               focus:outline-none focus:border-sky-500
+                               focus:ring-1 focus:ring-sky-500/20
+                               transition-all
+                               placeholder-slate-600">
+
+                </div>
+
+
+                <!-- Description -->
+                <div>
+
+                    <label
+                        for="link-desc"
+                        class="block text-[11px]
+                               font-medium text-slate-400
+                               mb-1.5 uppercase tracking-wider">
+
+                        คำอธิบายระบบสั้นๆ
+
+                    </label>
+
+                    <textarea
+                        id="link-desc"
+                        rows="2"
+                        placeholder="ระบุรายละเอียดหน้าที่ของลิงก์นี้..."
+                        class="w-full bg-slate-900/60
+                               border border-slate-800 rounded-xl
+                               px-3.5 py-2.5 text-sm text-slate-200
+                               focus:outline-none focus:border-sky-500
+                               focus:ring-1 focus:ring-sky-500/20
+                               transition-all
+                               placeholder-slate-600
+                               resize-none">
+                    </textarea>
+
+                </div>
+
+
+                <!-- Icon -->
+                <div>
+
+                    <label
+                        for="link-icon"
+                        class="block text-[11px]
+                               font-medium text-slate-400
+                               mb-1.5 uppercase tracking-wider">
+
+                        ไอคอน (Font Awesome Class)
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="link-icon"
+                        placeholder="fa-solid fa-link"
+                        value="fa-solid fa-link"
+                        class="w-full bg-slate-900/60
+                               border border-slate-800 rounded-xl
+                               px-3.5 py-2.5 text-sm text-slate-200
+                               focus:outline-none focus:border-sky-500
+                               focus:ring-1 focus:ring-sky-500/20
+                               transition-all
+                               placeholder-slate-600">
+
+                    <p class="text-[10px] text-slate-500 mt-1.5">
+                        // ตัวอย่าง: fa-solid fa-server,
+                        fa-solid fa-database
+                    </p>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="flex gap-3 pt-3">
+
+                    <button
+                        type="button"
+                        onclick="closeModal()"
+                        class="flex-1 bg-slate-900
+                               hover:bg-slate-800
+                               border border-slate-800
+                               text-slate-300 font-medium
+                               py-3 rounded-xl
+                               transition-all cursor-pointer">
+
+                        <i class="fa-solid fa-xmark mr-2"></i>
+
+                        ยกเลิก
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="flex-1 bg-gradient-to-r
+                               from-sky-600 to-indigo-600
+                               hover:from-sky-500
+                               hover:to-indigo-500
+                               text-white font-medium
+                               py-3 rounded-xl
+                               transition-all
+                               shadow-lg shadow-sky-500/20
+                               cursor-pointer">
+
+                        <i class="fa-solid fa-link mr-2"></i>
+
+                        เชื่อมต่อสัญญาณ
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script>
+
+        // =========================================================
+        // SYSTEM CORE LINKS
+        // =========================================================
+
+        const systemLinks = [
+
+            {
+                id: "sys-1",
+                name: "GGB Matrix Decoder",
+                url: "https://ai8639647g-cell.github.io/GGB/",
+                desc:
+                    "ระบบถอดรหัสเมทริกซ์และประมวลผลสัญญาณควอนตัมระดับสูง ประสิทธิภาพความเร็วแสง",
+                icon: "fa-solid fa-bezier-curve",
+                isSystem: true
+            },
+
+            {
+                id: "sys-2",
+                name: "Quantum Script Center",
+                url: "https://ai8639647g-cell.github.io/script/",
+                desc:
+                    "ศูนย์รวมสคริปต์ อัลกอริทึม และชุดคำสั่งประมวลผลควอนตัม สำหรับระบบควบคุมแกนกลาง",
+                icon: "fa-solid fa-terminal",
+                isSystem: true
+            },
+
+            {
+                id: "sys-3",
+                name: "Central Database Matrix",
+                url: "https://ai8639647g-cell.github.io/000000/",
+                desc:
+                    "ฐานข้อมูลกลางรหัส 000000 ศูนย์ควบคุมสำรองโครงข่ายสารสนเทศมัลติเวิร์ส",
+                icon: "fa-solid fa-database",
+                isSystem: true
+            }
+
+        ];
+
+
+        // =========================================================
+        // GET ALL LINKS
+        // =========================================================
+
+        function getLinks() {
+
+            let userLinks = [];
+
+            try {
+
+                userLinks =
+                    JSON.parse(
+                        localStorage.getItem("multiverse_links")
+                    ) || [];
+
+                if (!Array.isArray(userLinks)) {
+                    userLinks = [];
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "ไม่สามารถอ่านข้อมูล localStorage:",
+                    error
+                );
+
+                userLinks = [];
+
+            }
+
+            return [...systemLinks, ...userLinks];
+        }
+
+
+        // =========================================================
+        // ESCAPE HTML
+        // ป้องกัน HTML ที่ผู้ใช้กรอกเข้ามาทำให้หน้าเว็บเสีย
+        // =========================================================
+
+        function escapeHTML(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        // =========================================================
+        // RENDER LINKS
+        // =========================================================
+
+        function renderLinks() {
+
+            const container =
+                document.getElementById("links-container");
+
+            if (!container) {
+                return;
+            }
+
+            const links = getLinks();
+
+            container.innerHTML = "";
+
+
+            if (links.length === 0) {
+
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-16">
+                        <i class="fa-solid fa-link-slash
+                                  text-4xl text-slate-700 mb-4">
+                        </i>
+
+                        <p class="text-slate-500">
+                            ยังไม่มีโครงข่ายที่เชื่อมต่อ
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            links.forEach((link) => {
+
+                const card =
+                    document.createElement("div");
+
+
+                // Border
+                const borderStyle = link.isSystem
+                    ? "border-sky-500/20 hover:border-sky-400/60"
+                    : "border-slate-800 hover:border-indigo-500/50";
+
+
+                card.className = `
+                    backdrop-blur-md
+                    rounded-2xl
+                    p-6
+                    flex
+                    flex-col
+                    justify-between
+                    cyber-card
+                    transition-all
+                    duration-300
+                    relative
+                    group
+                    ${borderStyle}
+                `;
+
+
+                // Tag
+                const typeTag = link.isSystem
+
+                    ? `
+                        <span
+                            class="absolute top-4 right-4
+                                   bg-sky-500/10
+                                   text-sky-400
+                                   border border-sky-500/20
+                                   text-[9px]
+                                   font-bold
+                                   px-2
+                                   py-0.5
+                                   rounded-md
+                                   cyber-font
+                                   tracking-wider
+                                   uppercase">
+
+                            CORE SYSTEM
+
+                        </span>
+                    `
+
+                    : `
+                        <button
+                            type="button"
+                            onclick="handleDeleteLink('${escapeHTML(link.id)}')"
+                            class="absolute top-4 right-4
+                                   text-slate-500
+                                   hover:text-rose-400
+                                   p-1
+                                   opacity-0
+                                   group-hover:opacity-100
+                                   transition-opacity
+                                   cursor-pointer
+                                   z-20"
+                            title="ตัดการเชื่อมต่อ">
+
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+
+                        </button>
+                    `;
+
+
+                const safeName =
+                    escapeHTML(link.name);
+
+                const safeDesc =
+                    escapeHTML(
+                        link.desc ||
+                        "ไม่มีคำอธิบายหรือข้อมูลบันทึกเกี่ยวกับรหัสโครงข่ายนี้"
+                    );
+
+                const safeIcon =
+                    escapeHTML(
+                        link.icon ||
+                        "fa-solid fa-link"
+                    );
+
+                const safeUrl =
+                    escapeHTML(link.url);
+
+
+                card.innerHTML = `
+
+                    ${typeTag}
+
+                    <div class="mb-8">
+
+                        <div
+                            class="w-14 h-14
+                                   rounded-xl
+                                   bg-slate-950/80
+                                   flex
+                                   items-center
+                                   justify-center
+                                   text-sky-400
+                                   text-2xl
+                                   mb-5
+                                   border
+                                   border-slate-800
+                                   group-hover:text-sky-300
+                                   group-hover:border-sky-400/40
+                                   group-hover:scale-105
+                                   transition-all
+                                   duration-300
+                                   shadow-inner">
+
+                            <i
+                                class="${safeIcon}
+                                       group-hover:rotate-12
+                                       transition-transform">
+                            </i>
+
+                        </div>
+
+
+                        <h2
+                            class="text-xl
+                                   font-bold
+                                   text-slate-100
+                                   mb-2.5
+                                   tracking-wide
+                                   group-hover:text-sky-400
+                                   transition-colors">
+
+                            ${safeName}
+
+                        </h2>
+
+
+                        <p
+                            class="text-sm
+                                   text-slate-400
+                                   font-light
+                                   leading-relaxed
+                                   line-clamp-3
+                                   group-hover:text-slate-300
+                                   transition-colors">
+
+                            ${safeDesc}
+
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="${safeUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="w-full
+                               text-center
+                               bg-slate-950
+                               hover:bg-gradient-to-r
+                               hover:from-sky-950
+                               hover:to-indigo-950
+                               border
+                               border-slate-800/80
+                               hover:border-sky-500/40
+                               text-sky-400
+                               hover:text-sky-300
+                               text-sm
+                               font-semibold
+                               py-3
+                               rounded-xl
+                               transition-all
+                               flex
+                               items-center
+                               justify-center
+                               gap-2
+                               group/btn
+                               cursor-pointer
+                               shadow-md">
+
+                        เข้าสู่โครงข่ายระบบ
+
+                        <i
+                            class="fa-solid
+                                   fa-arrow-up-right-from-square
+                                   text-xs
+                                   transform
+                                   group-hover/btn:translate-x-0.5
+                                   group-hover/btn:-translate-y-0.5
+                                   transition-transform">
+                        </i>
+
+                    </a>
+
+                `;
+
+
+                container.appendChild(card);
+
+            });
+
+        }
+
+
+        // =========================================================
+        // OPEN MODAL
+        // =========================================================
+
+        function openModal() {
+
+            const modal =
+                document.getElementById("add-modal");
+
+            if (!modal) {
+                return;
+            }
+
+            modal.classList.remove("hidden");
+
+            requestAnimationFrame(() => {
+
+                modal.classList.add("modal-visible");
+
+            });
+
+        }
+
+
+        // =========================================================
+        // CLOSE MODAL
+        // =========================================================
+
+        function closeModal() {
+
+            const modal =
+                document.getElementById("add-modal");
+
+            if (!modal) {
+                return;
+            }
+
+            modal.classList.remove("modal-visible");
+
+            setTimeout(() => {
+
+                modal.classList.add("hidden");
+
+                const form =
+                    document.getElementById("link-form");
+
+                if (form) {
+                    form.reset();
+                }
+
+                const iconInput =
+                    document.getElementById("link-icon");
+
+                if (iconInput) {
+                    iconInput.value =
+                        "fa-solid fa-link";
+                }
+
+            }, 300);
+
+        }
+
+
+        // =========================================================
+        // SAVE NEW LINK
+        // =========================================================
+
+        function handleSaveLink(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document
+                    .getElementById("link-name")
+                    .value
+                    .trim();
+
+
+            const url =
+                document
+                    .getElementById("link-url")
+                    .value
+                    .trim();
+
+
+            const desc =
+                document
+                    .getElementById("link-desc")
+                    .value
+                    .trim();
+
+
+            const icon =
+                document
+                    .getElementById("link-icon")
+                    .value
+                    .trim();
+
+
+            if (!name || !url) {
+
+                alert(
+                    "กรุณากรอกชื่อระบบและ URL ให้ครบถ้วน"
+                );
+
+                return;
+            }
+
+
+            const newLink = {
+
+                id:
+                    "user-" +
+                    Date.now(),
+
+                name: name,
+
+                url: url,
+
+                desc: desc,
+
+                icon:
+                    icon ||
+                    "fa-solid fa-link",
+
+                isSystem: false
+
+            };
+
+
+            let userLinks = [];
+
+            try {
+
+                userLinks =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "multiverse_links"
+                        )
+                    ) || [];
+
+                if (!Array.isArray(userLinks)) {
+                    userLinks = [];
+                }
+
+            } catch (error) {
+
+                userLinks = [];
+
+            }
+
+
+            userLinks.push(newLink);
+
+
+            localStorage.setItem(
+                "multiverse_links",
+                JSON.stringify(userLinks)
+            );
+
+
+            renderLinks();
+
+            closeModal();
+
+        }
+
+
+        // =========================================================
+        // DELETE USER LINK
+        // =========================================================
+
+        function handleDeleteLink(id) {
+
+            const confirmed =
+                confirm(
+                    "คุณต้องการตัดการเชื่อมต่อโครงข่ายนี้ใช่หรือไม่?\n\n" +
+                    "ข้อมูลลิงก์นี้จะถูกลบออกจากหน่วยความจำของเบราว์เซอร์"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            let userLinks = [];
+
+            try {
+
+                userLinks =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "multiverse_links"
+                        )
+                    ) || [];
+
+                if (!Array.isArray(userLinks)) {
+                    userLinks = [];
+                }
+
+            } catch (error) {
+
+                userLinks = [];
+
+            }
+
+
+            userLinks =
+                userLinks.filter(
+                    link => link.id !== id
+                );
+
+
+            localStorage.setItem(
+                "multiverse_links",
+                JSON.stringify(userLinks)
+            );
+
+
+            renderLinks();
+
+        }
+
+
+        // =========================================================
+        // CLOSE MODAL WHEN CLICK OUTSIDE
+        // =========================================================
+
+        document
+            .getElementById("add-modal")
+            .addEventListener("click", function(event) {
+
+                if (event.target === this) {
+                    closeModal();
+                }
+
+            });
+
+
+        // =========================================================
+        // ESC KEY CLOSE MODAL
+        // =========================================================
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Escape") {
+                    closeModal();
+                }
+
+            }
+        );
+
+
+        // =========================================================
+        // START APPLICATION
+        // =========================================================
+
+        window.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                renderLinks();
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
